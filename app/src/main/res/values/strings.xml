@@ -1,6 +1,8 @@
 <resources>
-	<string name="app_name">KeepHEGElite</string>
+	<string name="app_name">Keep HEG Elite</string>
 	<string name="element_text">Element</string>
 	<string name="grid_layout_manager">Grid Layout</string>
 	<string name="linear_layout_manager">Linear Layout</string>
+	<!-- TODO: Remove or change this placeholder text -->
+	<string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

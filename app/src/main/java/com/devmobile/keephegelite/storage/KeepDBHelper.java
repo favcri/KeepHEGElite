@@ -38,9 +38,9 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getWritableDatabase(); // Pour pouvoir écrire dans la BDD
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
-		values.put(Keep.COLUMN_TEXTE, keep.getTitre());
-		values.put(Keep.COLUMN_TAG, keep.getTitre());
-		values.put(Keep.COLUMN_BG_COLOR, keep.getTitre());
+		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
+		values.put(Keep.COLUMN_TAG, keep.getTag());
+		values.put(Keep.COLUMN_BG_COLOR, keep.getBackgroundColor());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
 		return id;

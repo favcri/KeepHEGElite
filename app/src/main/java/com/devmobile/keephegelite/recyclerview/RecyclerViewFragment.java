@@ -1,7 +1,9 @@
 package com.devmobile.keephegelite.recyclerview;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,10 +134,13 @@ public class RecyclerViewFragment extends Fragment {
 		super.onSaveInstanceState(savedInstanceState);
 	}
 
+	@SuppressLint("LongLogTag")
 	private void initDataset() {
 		Keep keep = new Keep ("Keep 1", "Un texte 1 de la BDD", "FF0000");
-		db.insertKeep (keep);
-//		Log.d("L'texte du keeeeeeeep 1", keep.getTexte());
+		Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte());
+		long idKeep = db.insertKeep (keep);
+		Keep keepDB = db.getKeep(idKeep);
+		Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte());
 		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD", "FFFF00"));
 		db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
 		db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));

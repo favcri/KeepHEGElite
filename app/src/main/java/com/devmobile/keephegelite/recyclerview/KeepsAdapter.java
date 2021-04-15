@@ -1,5 +1,6 @@
 package com.devmobile.keephegelite.recyclerview;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -33,7 +35,11 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-
+					Toast.makeText(itemView.getContext(),getTvTitre().getText().toString() + " :: " + getTvTexte().getText().toString(), Toast.LENGTH_SHORT).show();
+//					ItemFragment itemFragment = new ItemFragment();
+//					Bundle args = new Bundle();
+//					args.putString("Keep", getTvTitre().getText().toString());
+//					itemFragment.setArguments(args);
 				}
 			});
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Keep_Titre);
