@@ -17,7 +17,7 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class KeepDBHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "keeps_db";
 
 	public KeepDBHelper(Context context) {
@@ -37,14 +37,15 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 
 	public long insertKeep(Keep keep) {
 		String color = keep.getColor();
-		Log.d("L'couleur injecte", color);
+//		Log.d("L'couleur injecte", color);
 		SQLiteDatabase db = this.getWritableDatabase(); // Pour pouvoir écrire dans la BDD
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
 		values.put(Keep.COLUMN_COLOR, color);
 		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
+		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
 //		values.put(Keep.COLUMN_TAG, keep.getTag());
-		Log.d("L'Les values : ", values.toString());
+//		Log.d("L'Les values : ", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
 		return id;
@@ -53,13 +54,25 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	public Keep getKeep(long id) {
 		SQLiteDatabase db = this.getReadableDatabase(); // Pour pouvoir lire dans la BDD
 		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR},
+				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP},
 				Keep.COLUMN_NUM + " = ?",
 				new String[]{String.valueOf(id)}, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
+		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)));
+		cursor.close();
+		return keep;
+	}
 
-		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)));
+	public Keep getKeep(int numKeep) {
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(Keep.TABLE_NAME,
+				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP},
+				Keep.COLUMN_NUM_KEEP + " = ?",
+				new String[]{String.valueOf(numKeep)}, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)));
 		cursor.close();
 		return keep;
 	}
@@ -71,7 +84,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
 			do {
-				Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)));
+				Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)));
 				keeps.add(keep);
 			} while (cursor.moveToNext());
 		}

@@ -29,29 +29,25 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	private List<Keep> mKeeps;
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
+		private Keep keep;
 		private final TextView tvTitre;
 		private final TextView tvTexte;
-		private final TextView tvColor;
 
 		public ViewHolder(@NonNull View itemView) {
 			super(itemView);
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(itemView.getContext(),getTvTitre().getText().toString() + " :: " + getTvTexte().getText().toString(), Toast.LENGTH_SHORT).show();
-
 					Intent intent = new Intent(itemView.getContext() , KeepAffichage.class);
-					intent.putExtra("KeepTitre", getTvTitre().getText().toString());
-					itemView.getContext().startActivity(intent); // if needed, add myContext before starting myContext.startActivity..
-
-//					AppCompatActivity activity = (AppCompatActivity) itemView.getContext().getApplicationContext();
-//					Fragment fragment = ItemFragment.newInstance(getTvTitre().getText().toString());
-//					activity.getSupportFragmentManager().beginTransaction().replace(R.id.itemFragment, fragment).commit();
+//					intent.putExtra("KeepTitre", tvTitre.getText().toString());
+//					intent.putExtra("Keep", numKeep.getText().toString());
+					intent.putExtra("Keep", keep.getNumKeep());
+					itemView.getContext().startActivity(intent);
 				}
 			});
+//			this.numKeep = (TextView) itemView.findViewById(R.id.Row_Keep_numKeep);
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
-			this.tvColor = (TextView) itemView.findViewById(R.id.Row_Keep_Color);
 		}
 
 		public void setBackgroundColor (String color) {
@@ -69,9 +65,6 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		public TextView getTvTexte() {
 			return this.tvTexte;
 		}
-		public TextView getTvColor() {
-			return this.tvColor;
-		}
 	}
 
 	public KeepsAdapter(List<Keep> keeps) {
@@ -86,6 +79,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+		viewHolder.keep = mKeeps.get(position);
 		viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
 		viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());

@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">Keep HEG Elite</string>
+	<string name="app_name">AAKeep HEG Elite</string>
 	<string name="element_text">Element</string>
 	<string name="grid_layout_manager">Grid Layout</string>
 	<string name="linear_layout_manager">Linear Layout</string>

@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="72dp"
+	android:layout_marginTop="8dp"
 	android:layout_marginLeft="16dp"
 	android:layout_marginRight="16dp"
 	android:gravity="center_vertical">
@@ -21,13 +22,12 @@
 		android:layout_margin="8dp"
 		android:layout_marginStart="8dp"
 		android:layout_marginLeft="8dp" />
-
 	<TextView
-		android:id="@+id/Row_Keep_Color"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal"
-		android:layout_margin="8dp" />
+		android:id="@+id/Row_Keep_numKeep"
+		android:layout_width="0dp"
+		android:layout_height="0dp"
+		/>
+
 	<!--
 		<TextView
 			android:id="@+id/Row_Keep_Date"
