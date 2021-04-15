@@ -82,7 +82,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 //		Log.d("L'color du keep ecrit", mKeeps.get(position).getBackgroundColor());
 //		Log.d("L'color du keep", mKeeps.get(position).getBackgroundColor());
 //		viewHolder.setBackgroundColor(mKeeps.get(position).getBackgroundColor());
-//		viewHolder.setBackgroundColor("FF00FF");
+		viewHolder.setBackgroundColor("FF00FF");
 //		String color = "#" + "FF00FF";
 //		viewHolder.getTvTitre().setBackgroundColor(Color.parseColor(color));
 //		Log.d("L'titre du keep", mKeeps.get(position).getTitre());

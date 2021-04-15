@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -35,12 +36,15 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	}
 
 	public long insertKeep(Keep keep) {
+		String color = keep.getBackgroundColor();
 		SQLiteDatabase db = this.getWritableDatabase(); // Pour pouvoir écrire dans la BDD
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
 		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
 		values.put(Keep.COLUMN_TAG, keep.getTag());
-		values.put(Keep.COLUMN_BG_COLOR, keep.getBackgroundColor());
+//		Log.d("L'couleur injecte", color);
+		values.put(Keep.COLUMN_BG_COLOR, color);
+		Log.d("L'Les values : ", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
 		return id;
