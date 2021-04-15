@@ -55,6 +55,11 @@ public class Keep {
 		this.done = done;
 	}
 
+	public Keep(String titre, String texte, String tag, String color) {
+		this (titre, texte, color);
+		this.tag = tag;
+	}
+
 	public String getTitre() {
 		return titre;
 	}
