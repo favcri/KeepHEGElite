@@ -55,7 +55,7 @@ public class Keep {
 		this.done = done;
 	}
 
-	public Keep(String titre, String texte, String tag, String color) {
+	public Keep(String titre, String texte, String color, String tag) {
 		this (titre, texte, color);
 		this.tag = tag;
 	}

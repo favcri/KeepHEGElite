@@ -66,7 +66,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 
 	public List<Keep> getAllKeeps() {
 		List<Keep> keeps = new ArrayList<>();
-		String selectQuery = "SELECT * FROM " + Keep.TABLE_NAME + " ORDER BY " + Keep.COLUMN_NUM + " DESC";
+		String selectQuery = "SELECT * FROM " + Keep.TABLE_NAME + " ORDER BY " + Keep.COLUMN_NUM + " ASC";
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {

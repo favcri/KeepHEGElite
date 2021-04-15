@@ -49,9 +49,12 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		}
 
 		public void setBackgroundColor (String color) {
-			color = "#" + color;
-			this.tvTitre.setBackgroundColor(Color.parseColor(color));
-			this.tvTexte.setBackgroundColor(Color.parseColor(color));
+			StringBuilder sbColor = new StringBuilder();
+			if (!color.substring(0, 0).contains("#"))
+				sbColor.append("#");
+			sbColor.append(color);
+			color = sbColor.toString();
+			itemView.setBackgroundColor(Color.parseColor(color));
 		}
 
 		public TextView getTvTitre() {
@@ -79,15 +82,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 		viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
 		viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
-//		viewHolder.getTvColor().setText(mKeeps.get(position).getBackgroundColor());
-//		Log.d("L'color du keep ecrit", mKeeps.get(position).getColor());
-//		Log.d("L'color du keep", mKeeps.get(position).getBackgroundColor());
-//		viewHolder.setBackgroundColor(mKeeps.get(position).getBackgroundColor());
-//		viewHolder.setBackgroundColor("FF00FF");
-//		String color = "#" + "FF00FF";
-//		viewHolder.getTvTitre().setBackgroundColor(Color.parseColor(color));
-//		Log.d("L'titre du keep", mKeeps.get(position).getTitre());
-//		Log.d("L'texte du keep", mKeeps.get(position).getTexte());
+		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());
 	}
 
 	@Override
