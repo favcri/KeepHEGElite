@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -21,7 +18,7 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 public class KeepAffichage extends AppCompatActivity {
 	private Keep keep;
 	private KeepDBHelper db;
-	private TextView tvTitre;
+	private EditText titre	;
 	private EditText texte;
 
 	@Override
@@ -29,13 +26,17 @@ public class KeepAffichage extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		db = new KeepDBHelper(this);
 		setContentView(R.layout.activity_keep_affichage);
+//		findViewById(R.id.menu_color).setVisibility(View.VISIBLE);
 		Bundle extras = getIntent().getExtras();
+		titre = (EditText) findViewById(R.id.Affichage_Keep_Titre);
+		texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
 			Log.d("L'numKeep a la sortie", String.valueOf(numKeep));
-			tvTitre = (TextView) findViewById(R.id.Affichage_Keep_Titre);
-			if (numKeep == 0)
-				tvTitre.setText("Pas de Keep trouve...");
+			if (numKeep == 0) {
+				titre.setHint("Votre titre ici");
+				texte.setHint("Votre texte ici");
+			}
 			else {
 				keep = db.getKeep(numKeep);
 				View view = findViewById(R.id.Affichage_Keep);
@@ -44,18 +45,19 @@ public class KeepAffichage extends AppCompatActivity {
 					sbColor.append("#");
 				sbColor.append(keep.getColor());
 				view.setBackgroundColor(Color.parseColor(sbColor.toString()));
-				tvTitre.setText(keep.getTitre());
-				tvTitre = (TextView) findViewById(R.id.Affichage_Keep_Titre);
-				texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
+				titre.setText(keep.getTitre());
 				texte.setText(keep.getTexte());
 			}
 		}
+		else {
+			titre.setHint("Votre titre ici");
+			texte.setHint("Votre texte ici");
+		}
+		findViewById(R.id.fab_keep).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
+			}
+		});
 	}
-
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if ((keyCode == KeyEvent.KEYCODE_BACK))
-//			finish();
-//		return super.onKeyDown(keyCode, event);
-//	}
 }

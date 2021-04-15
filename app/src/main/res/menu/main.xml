@@ -1,4 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	tools:ignore="AppCompatResource">
+	<item
+		android:id="@+id/menu_color"
+		android:title="change color of Keep" />
+	<item
+		android:id="@+id/menu_delete"
+		android:title="Delete Keep" />
 </menu>

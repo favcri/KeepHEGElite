@@ -19,6 +19,13 @@
 			android:text="@string/grid_layout_manager"/>
 	</RadioGroup>
 
+	<com.google.android.material.floatingactionbutton.FloatingActionButton
+		android:id="@+id/fab_main"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|end"
+		/>
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/recyclerView"
 		android:layout_width="match_parent"

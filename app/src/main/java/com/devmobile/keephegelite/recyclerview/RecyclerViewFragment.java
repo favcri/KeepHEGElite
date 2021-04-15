@@ -1,6 +1,7 @@
 package com.devmobile.keephegelite.recyclerview;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -52,6 +54,14 @@ public class RecyclerViewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+		rootView.findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
+			@Override // FAB à placer comme il faut... mais ou ??
+			public void onClick(View v) {
+				Intent intent = new Intent(rootView.getContext() , KeepAffichage.class);
+				rootView.getContext().startActivity(intent);
+			}
+		});
+//		rootView.findViewById(R.id.menu_color).setVisibility(View.INVISIBLE);
 		rootView.setTag(TAG);
 
 		// BEGIN_INCLUDE(initializeRecyclerView)
