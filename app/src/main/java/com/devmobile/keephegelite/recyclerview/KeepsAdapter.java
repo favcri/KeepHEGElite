@@ -1,11 +1,8 @@
 package com.devmobile.keephegelite.recyclerview;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.devmobile.keephegelite.R;
@@ -37,15 +39,19 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(itemView.getContext(),getTvTitre().getText().toString() + " :: " + getTvTexte().getText().toString(), Toast.LENGTH_SHORT).show();
-//					ItemFragment itemFragment = new ItemFragment();
-//					Bundle args = new Bundle();
-//					args.putString("Keep", getTvTitre().getText().toString());
-//					itemFragment.setArguments(args);
+
+					Intent intent = new Intent(itemView.getContext() , KeepAffichage.class);
+					intent.putExtra("KeepTitre", getTvTitre().getText().toString());
+					itemView.getContext().startActivity(intent); // if needed, add myContext before starting myContext.startActivity..
+
+//					AppCompatActivity activity = (AppCompatActivity) itemView.getContext().getApplicationContext();
+//					Fragment fragment = ItemFragment.newInstance(getTvTitre().getText().toString());
+//					activity.getSupportFragmentManager().beginTransaction().replace(R.id.itemFragment, fragment).commit();
 				}
 			});
-			this.tvTitre = (TextView) itemView.findViewById(R.id.Keep_Titre);
-			this.tvTexte = (TextView) itemView.findViewById(R.id.Keep_Texte);
-			this.tvColor = (TextView) itemView.findViewById(R.id.Keep_Color);
+			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
+			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
+			this.tvColor = (TextView) itemView.findViewById(R.id.Row_Keep_Color);
 		}
 
 		public void setBackgroundColor (String color) {
@@ -74,7 +80,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 
 	@Override
 	public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-		View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.text_row_item, viewGroup, false);
+		View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.keep_row_item, viewGroup, false);
 		return new ViewHolder(v);
 	}
 

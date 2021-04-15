@@ -2,6 +2,7 @@ package com.devmobile.keephegelite.recyclerview;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,18 +11,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.common.activities.SampleActivityBase;
-import com.devmobile.keephegelite.storage.KeepDBHelper;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends SampleActivityBase {
 	public static final String TAG = "MainActivity";
-	private KeepDBHelper db;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		db = new KeepDBHelper(this);
 
 		if (savedInstanceState == null) {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
