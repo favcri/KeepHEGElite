@@ -27,7 +27,7 @@ public class Keep {
 	private String texte;
 	private String tag;
 	private boolean done = false;
-	private String color;
+	private String color = "FFFFFF"; // Couleur de fond blanche par défaut
 	private LocalDate dateLimite = LocalDate.parse("2000-01-01"); // Pour éviter un NullPointerException dans KeepsAdapter
 
 	public Keep () {
