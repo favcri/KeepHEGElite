@@ -13,21 +13,21 @@ public class Keep {
 	public static final String COLUMN_TITRE = "titre";
 	public static final String COLUMN_TEXTE = "texte";
 	public static final String COLUMN_TAG = "tag";
-	public static final String COLUMN_BG_COLOR = "bg_color";
+	public static final String COLUMN_COLOR = "bg_color";
 	public static final String CREATE_TABLE =
 			"CREATE TABLE " + TABLE_NAME + "("
 					+ COLUMN_NUM + " INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ COLUMN_TITRE + " TEXT,"
 					+ COLUMN_TEXTE + " TEXT,"
 					+ COLUMN_TAG + " TEXT,"
-					+ COLUMN_BG_COLOR + " TEXT"
+					+ COLUMN_COLOR + " TEXT"
 					+ ")";
 
 	private String titre;
 	private String texte;
 	private String tag;
 	private boolean done = false;
-	private String backgroundColor;
+	private String color;
 	private LocalDate dateLimite = LocalDate.parse("2000-01-01"); // Pour éviter un NullPointerException dans KeepsAdapter
 
 	public Keep () {
@@ -39,9 +39,9 @@ public class Keep {
 		this.texte = texte;
 	}
 
-	public Keep (String titre, String texte, String backgroundColor) {
+	public Keep (String titre, String texte, String color) {
 		this (titre, texte);
-		this.backgroundColor = backgroundColor;
+		this.color = color;
 	}
 
 	public Keep (String titre, String texte, LocalDate dateLimite) {
@@ -83,16 +83,12 @@ public class Keep {
 		return dateLimite;
 	}
 
-	public String getBackgroundColor() {
-		return backgroundColor;
+	public String getColor() {
+		return color;
 	}
 
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-
-	public String getColorString () {
-		return String.valueOf(this.backgroundColor);
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public void setDateLimite(LocalDate dateLimite) {
