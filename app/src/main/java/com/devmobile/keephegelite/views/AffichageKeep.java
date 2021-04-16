@@ -3,11 +3,13 @@ package com.devmobile.keephegelite.views;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +18,11 @@ import android.widget.Toast;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
+import com.devmobile.keephegelite.recyclerview.MainActivity;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AffichageKeep extends AppCompatActivity {
@@ -76,7 +82,28 @@ public class AffichageKeep extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
 			case R.id.menu_color:
-				Toast.makeText(this, "Menu couleur", Toast.LENGTH_SHORT).show();
+				ColorPickerDialogBuilder
+						.with(this)
+						.setTitle("Choisissez votre couleur de fond")
+						.initialColor(0xFFF)
+						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+						.density(12)
+						.setPositiveButton("OK", new ColorPickerClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+								Log.d("L'CCLLRR : ", Integer.toHexString(selectedColor));
+								keep.setColor(Integer.toHexString(selectedColor));
+							}
+						})
+						.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+							}
+						})
+						.showColorEdit(false)
+//						.setColorEditTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_bright))
+						.build()
+						.show();
 				return true;
 			case R.id.menu_delete:
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -105,7 +132,7 @@ public class AffichageKeep extends AppCompatActivity {
 		builder.setMessage("Voulez-vous garder vos modifications ?");
 		builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString());
+				db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor());
 				AffichageKeep.super.onBackPressed();
 			}
 		});
@@ -122,23 +149,4 @@ public class AffichageKeep extends AppCompatActivity {
 		});
 		builder.show();
 	}
-//		AlertDialog dialog = new AlertDialog.Builder(this)
-//				.setTitle("Voulez-vous garder vos modifications ?")
-//				.setPositiveButton("Oui !", new DialogInterface.OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						if (!k.getTitre().equals(titre.getText().toString()) || !k.getTexte().equals(texte.getText().toString()))
-//							db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString());
-//					}
-//				})
-//				.setNegativeButton("Annuler", null)
-//				.setNeutralButton("Continuer l'édition", new DialogInterface.OnClickListener() {
-//					@Override
-//					public void onClick(DialogInterface dialog, int which) {
-//						dialog.cancel();
-//					}
-//				})
-//				.create();
-//				dialog.show();
-//	}
 }

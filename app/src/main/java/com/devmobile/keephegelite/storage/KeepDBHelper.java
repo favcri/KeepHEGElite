@@ -117,11 +117,13 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 				new String[]{String.valueOf(titre)});
 	}
 
-	public int updateKeep (int id, String titre, String texte) {
+	public int updateKeep (int id, String titre, String texte, String color) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, titre);
 		values.put(Keep.COLUMN_TEXTE, texte);
+		values.put(Keep.COLUMN_COLOR, color);
+		Log.d("L'values d'update", values.toString());
 		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_NUM_KEEP + " = ?", new String[]{String.valueOf(id)});
 	}
 }
