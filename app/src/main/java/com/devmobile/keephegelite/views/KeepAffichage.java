@@ -3,14 +3,12 @@ package com.devmobile.keephegelite.views;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -20,7 +18,7 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 public class KeepAffichage extends AppCompatActivity {
 	private Keep keep;
 	private KeepDBHelper db;
-	private EditText titre	;
+	private EditText titre;
 	private EditText texte;
 
 	@Override
@@ -31,29 +29,31 @@ public class KeepAffichage extends AppCompatActivity {
 //		findViewById(R.id.menu_color).setVisibility(View.VISIBLE);
 		Bundle extras = getIntent().getExtras();
 		titre = (EditText) findViewById(R.id.Affichage_Keep_Titre);
+		titre.setFocusable(false);
 		texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
+		texte.setFocusable(false);
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
-			Log.d("L'numKeep a la sortie", String.valueOf(numKeep));
-			if (numKeep == 0) {
-				titre.setHint("Votre titre ici");
-				texte.setHint("Votre texte ici");
-			}
-			else {
-				keep = db.getKeep(numKeep);
-				View view = findViewById(R.id.Affichage_Keep);
-				StringBuilder sbColor = new StringBuilder();
-				if (!keep.getColor().substring(0, 0).contains("#"))
-					sbColor.append("#");
-				sbColor.append(keep.getColor());
-				view.setBackgroundColor(Color.parseColor(sbColor.toString()));
-				titre.setText(keep.getTitre());
-				texte.setText(keep.getTexte());
-			}
+			keep = db.getKeep(numKeep);
+			View view = findViewById(R.id.Affichage_Keep);
+			StringBuilder sbColor = new StringBuilder();
+			if (!keep.getColor().substring(0, 0).contains("#"))
+				sbColor.append("#");
+			sbColor.append(keep.getColor());
+			view.setBackgroundColor(Color.parseColor(sbColor.toString()));
+			titre.setText(keep.getTitre());
+			texte.setText(keep.getTexte());
+			modifiable (titre);
+			modifiable (texte);
 		}
-		else {
-			titre.setHint("Votre titre ici");
-			texte.setHint("Votre texte ici");
-		}
+	}
+
+	private void modifiable(EditText editText) {
+		editText.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editText.setFocusableInTouchMode(true);
+			}
+		});
 	}
 }

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -40,6 +41,7 @@ public class RecyclerViewFragment extends Fragment {
 	protected RadioButton mGridLayoutRadioButton;
 
 	protected RecyclerView mRecyclerView;
+	protected SwipeRefreshLayout swipeRefreshLayout;
 	protected KeepsAdapter mAdapter;
 	protected RecyclerView.LayoutManager mLayoutManager;
 	protected List<Keep> mKeeps;
@@ -55,6 +57,8 @@ public class RecyclerViewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+//		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.RecyclerSwipe);
+//		this.configureSwipeRefreshLayout();
 		rootView.findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
 			@Override // FAB à placer comme il faut... mais ou ??
 			public void onClick(View v) {
@@ -104,6 +108,20 @@ public class RecyclerViewFragment extends Fragment {
 		});
 
 		return rootView;
+	}
+
+	/**
+	 * Pour actualiser la RecyclerView en tirant vers le bas (ne fonctionne pas car fait disparaitre la RecyclerView...)
+	 */
+	private void configureSwipeRefreshLayout() {
+		swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+			@Override
+			public void onRefresh() {
+				mKeeps.clear();
+				mKeeps = db.getAllKeeps();
+				mAdapter.notifyDataSetChanged();
+			}
+		});
 	}
 
 	/**
