@@ -3,8 +3,8 @@
 	tools:ignore="AppCompatResource">
 	<item
 		android:id="@+id/menu_color"
-		android:title="change color of Keep" />
+		android:title="Changer la couleur du Keep" />
 	<item
 		android:id="@+id/menu_delete"
-		android:title="Delete Keep" />
+		android:title="Supprimer le Keep" />
 </menu>

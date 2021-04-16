@@ -8,8 +8,11 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -17,7 +20,6 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AffichageKeep extends AppCompatActivity {
-	private static Keep k;
 	private Keep keep;
 	private KeepDBHelper db;
 	private EditText titre;
@@ -36,7 +38,6 @@ public class AffichageKeep extends AppCompatActivity {
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
 			keep = db.getKeep(numKeep);
-			k = keep;
 			View view = findViewById(R.id.Affichage_Keep);
 			StringBuilder sbColor = new StringBuilder();
 			if (!keep.getColor().substring(0, 0).contains("#"))
@@ -60,13 +61,50 @@ public class AffichageKeep extends AppCompatActivity {
 	}
 
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem actionViewItem = menu.findItem(R.id.menu_color);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.menu_color:
+				Toast.makeText(this, "Menu couleur", Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.menu_delete:
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setMessage("Voulez-vous supprimer le Keep ?");
+				builder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						db.deleteKeep(keep.getNumKeep());
+						finish();
+					}
+				});
+				builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				builder.show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
 	public void onBackPressed() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//		builder.setTitle("Enregistrer ?");
 		builder.setMessage("Voulez-vous garder vos modifications ?");
 		builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-//				if (!k.getTitre().equals(titre.getText().toString()) || !k.getTexte().equals(texte.getText().toString()))
 				db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString());
 				AffichageKeep.super.onBackPressed();
 			}

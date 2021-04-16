@@ -100,6 +100,15 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		return numero;
 	}
 
+	public int deleteKeep (int id) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		int numero = db.delete(Keep.TABLE_NAME, Keep.COLUMN_NUM_KEEP + " = ?",
+				new String[]{String.valueOf(id)});
+		db.close();
+		return numero;
+	}
+
+
 	public int updateKeep (String titre, String texte) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();

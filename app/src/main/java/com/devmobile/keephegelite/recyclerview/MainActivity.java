@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
@@ -50,6 +51,16 @@ public class MainActivity extends SampleActivityBase {
 //		actionBar.setDisplayHomeAsUpEnabled(true);
 		return true;
 	}
+
+//	@Override
+//	public boolean onPrepareOptionsMenu(Menu menu) {
+//		MenuItem logToggle = menu.findItem(R.id.menu_color);
+//		logToggle.setVisible(findViewById(R.id.sample_output) instanceof ViewAnimator);
+//		logToggle.setTitle(mLogShown ? R.string.sample_hide_log : R.string.sample_show_log);
+//
+//		return super.onPrepareOptionsMenu(menu);
+//	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
