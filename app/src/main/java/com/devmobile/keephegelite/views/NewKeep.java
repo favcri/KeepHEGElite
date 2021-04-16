@@ -17,7 +17,6 @@ public class NewKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
-	private Keep keep;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +32,6 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		keep = new Keep (titre.getText().toString(), texte.getText().toString());
-		Log.d("L'Keep manuel", keep.toString());
-		db.insertKeep(keep);
+		db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
 	}
 }

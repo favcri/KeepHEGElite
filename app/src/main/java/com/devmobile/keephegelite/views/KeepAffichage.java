@@ -55,13 +55,5 @@ public class KeepAffichage extends AppCompatActivity {
 			titre.setHint("Votre titre ici");
 			texte.setHint("Votre texte ici");
 		}
-		findViewById(R.id.fab_keep).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				keep = new Keep (titre.getText().toString(), texte.getText().toString());
-				Log.d("L'Keep manuel", keep.toString());
-				db.insertKeep(keep);
-			}
-		});
 	}
 }
