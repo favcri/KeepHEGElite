@@ -12,6 +12,8 @@ import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
 
+// TODO : Ne pas ajouter si vide !!!
+
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class NewKeep extends AppCompatActivity {
 	private KeepDBHelper db;
@@ -32,6 +34,8 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
+		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
+			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
+		}
 	}
 }

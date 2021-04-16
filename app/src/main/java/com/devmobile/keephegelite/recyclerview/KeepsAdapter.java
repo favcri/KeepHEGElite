@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
-import com.devmobile.keephegelite.views.KeepAffichage;
+import com.devmobile.keephegelite.views.AffichageKeep;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(itemView.getContext() , KeepAffichage.class);
+					Intent intent = new Intent(itemView.getContext() , AffichageKeep.class);
 //					intent.putExtra("KeepTitre", tvTitre.getText().toString());
 //					intent.putExtra("Keep", numKeep.getText().toString());
 					intent.putExtra("Keep", keep.getNumKeep());

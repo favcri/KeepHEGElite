@@ -12,7 +12,7 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.KeepHEGElite">
 		<activity android:name=".views.NewKeep"></activity>
-		<activity android:name=".views.KeepAffichage" />
+		<activity android:name=".views.AffichageKeep" />
 		<activity
 			android:name=".recyclerview.MainActivity"
 			android:label="@string/app_name">

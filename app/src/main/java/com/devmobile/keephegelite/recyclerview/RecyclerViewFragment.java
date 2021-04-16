@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
-import com.devmobile.keephegelite.views.KeepAffichage;
 import com.devmobile.keephegelite.views.NewKeep;
 
 import java.util.List;
@@ -89,6 +88,7 @@ public class RecyclerViewFragment extends Fragment {
 		mAdapter = new KeepsAdapter (mKeeps);
 		// Set CustomAdapter as the adapter for RecyclerView.
 		mRecyclerView.setAdapter(mAdapter);
+		deleteItem(mRecyclerView);
 		// END_INCLUDE(initializeRecyclerView)
 
 		mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
@@ -108,6 +108,30 @@ public class RecyclerViewFragment extends Fragment {
 		});
 
 		return rootView;
+	}
+
+	/**
+	 * TODO : Implémenter un long click sur un élément, le supprime :)
+	 * @param mRecyclerView
+	 */
+	private void deleteItem(RecyclerView mRecyclerView) {
+//		listViewKeeps.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+/*			@Override // Pour supprimer la note avec un long clic
+			public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
+				AlertDialog dialog = new AlertDialog.Builder(MainActivity.this) // Pop up pour confirmer la suppression
+						.setTitle("Voulez-vous vraiment supprimer cette note ?")
+						.setPositiveButton("Supprimer la note", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								keeps.remove(pos);
+								keepsAdapter.notifyDataSetChanged();
+							}
+						})
+						.setNegativeButton("Annuler", null)
+						.create();
+				dialog.show();
+				return true; // Marque la fin du clic
+			} */ // Commenter jusqu'ici pour tester le color picker
 	}
 
 	/**
@@ -165,13 +189,13 @@ public class RecyclerViewFragment extends Fragment {
 	@SuppressLint("LongLogTag")
 	private void initDataset() {
 		Keep keep = new Keep ("Keep 1", "Un texte 1 de la BDD", "FF0000");
-		Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte() + " :: " + keep.getColor());
+//		Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte() + " :: " + keep.getColor());
 		long idKeep = db.insertKeep (keep);
-		Keep keepDB = db.getKeep(idKeep);
-		Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
+//		Keep keepDB = db.getKeep(idKeep);
+//		Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
 		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD"));
-		db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
-		db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
+//		db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
+//		db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
 		mKeeps = db.getAllKeeps();
 	}
 }
