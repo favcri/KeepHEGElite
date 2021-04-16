@@ -1,5 +1,6 @@
 package com.devmobile.keephegelite.recyclerview;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ public class MainActivity extends SampleActivityBase {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
+//		ActionBar actionBar = getActionBar();
+//		actionBar.setDisplayHomeAsUpEnabled(true);
 		return true;
 	}
 

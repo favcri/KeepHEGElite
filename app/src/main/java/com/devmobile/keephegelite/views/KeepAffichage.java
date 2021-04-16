@@ -1,12 +1,14 @@
-package com.devmobile.keephegelite.recyclerview;
+package com.devmobile.keephegelite.views;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -56,7 +58,9 @@ public class KeepAffichage extends AppCompatActivity {
 		findViewById(R.id.fab_keep).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
+				keep = new Keep (titre.getText().toString(), texte.getText().toString());
+				Log.d("L'Keep manuel", keep.toString());
+				db.insertKeep(keep);
 			}
 		});
 	}

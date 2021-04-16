@@ -11,7 +11,8 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.KeepHEGElite">
-		<activity android:name=".recyclerview.KeepAffichage"></activity>
+		<activity android:name=".views.NewKeep"></activity>
+		<activity android:name=".views.KeepAffichage" />
 		<activity
 			android:name=".recyclerview.MainActivity"
 			android:label="@string/app_name">

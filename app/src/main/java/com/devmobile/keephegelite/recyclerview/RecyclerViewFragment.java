@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.devmobile.keephegelite.views.KeepAffichage;
+import com.devmobile.keephegelite.views.NewKeep;
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class RecyclerViewFragment extends Fragment {
 		rootView.findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
 			@Override // FAB à placer comme il faut... mais ou ??
 			public void onClick(View v) {
-				Intent intent = new Intent(rootView.getContext() , KeepAffichage.class);
+				Intent intent = new Intent(rootView.getContext(), NewKeep.class);
 				rootView.getContext().startActivity(intent);
 			}
 		});
@@ -115,8 +116,7 @@ public class RecyclerViewFragment extends Fragment {
 
 		// If a layout manager has already been set, get current scroll position.
 		if (mRecyclerView.getLayoutManager() != null) {
-			scrollPosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager())
-					.findFirstCompletelyVisibleItemPosition();
+			scrollPosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 		}
 
 		switch (layoutManagerType) {
