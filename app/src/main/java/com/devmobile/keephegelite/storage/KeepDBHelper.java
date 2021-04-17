@@ -44,6 +44,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
 		values.put(Keep.COLUMN_COLOR, keep.getColor());
 		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
+		values.put(Keep.COLUMN_TAG, keep.getTag());
 		values.put(Keep.COLUMN_DATE, keep.getDateLimite());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
 //		values.put(Keep.COLUMN_TAG, keep.getTag());

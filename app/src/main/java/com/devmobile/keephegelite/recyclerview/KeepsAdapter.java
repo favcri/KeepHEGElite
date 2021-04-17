@@ -3,6 +3,7 @@ package com.devmobile.keephegelite.recyclerview;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		private Keep keep;
 		private final TextView tvTitre;
 		private final TextView tvTexte;
+		private final TextView tvTag;
 
 		public ViewHolder(@NonNull View itemView) {
 			super(itemView);
@@ -40,9 +42,9 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 					itemView.getContext().startActivity(intent);
 				}
 			});
-//			this.numKeep = (TextView) itemView.findViewById(R.id.Row_Keep_numKeep);
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
+			this.tvTag = (TextView) itemView.findViewById(R.id.Row_Keep_Tag);
 		}
 
 		public void setBackgroundColor (String color) {
@@ -60,6 +62,9 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		public TextView getTvTexte() {
 			return this.tvTexte;
 		}
+		public TextView getTvTag() {
+			return this.tvTag;
+		}
 	}
 
 	public KeepsAdapter(List<Keep> keeps) {
@@ -75,6 +80,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 		viewHolder.keep = mKeeps.get(position);
+		viewHolder.getTvTag().setText(mKeeps.get(position).getTag());
 		viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
 		viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());

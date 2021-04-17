@@ -124,7 +124,7 @@ public class NewKeep extends AppCompatActivity {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
 			Log.d("L'color new", colorStr);
-			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, date.getText().toString()));
+			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
 		}
 	}
 }

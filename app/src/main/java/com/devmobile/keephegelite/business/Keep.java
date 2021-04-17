@@ -55,11 +55,20 @@ public class Keep {
 		this.color = color;
 	}
 
-	public Keep (String titre, String texte, String color, String dateLimite) {
+	public Keep (String titre, String texte, String color, String tag) {
 		this ();
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
+		this.tag = tag;
+	}
+
+	public Keep (String titre, String texte, String color, String tag, String dateLimite) {
+		this ();
+		this.titre = titre;
+		this.texte = texte;
+		this.color = color;
+		this.tag = tag;
 		this.dateLimite = dateLimite;
 	}
 

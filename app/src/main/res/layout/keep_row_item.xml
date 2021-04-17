@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="72dp"
-	android:layout_marginTop="8dp"
+	android:layout_height="wrap_content"
 	android:layout_marginLeft="16dp"
+	android:layout_marginTop="8dp"
 	android:layout_marginRight="16dp"
 	android:gravity="center_vertical">
 
-	<TextView
-		android:id="@+id/Row_Keep_Titre"
-		android:layout_width="wrap_content"
+	<RelativeLayout
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_margin="8dp"
-		/>
+		android:layout_gravity="center_horizontal">
 
-	<TextView
-		android:id="@+id/Row_Keep_Texte"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal|end"
-		android:layout_margin="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginLeft="8dp" />
-	<TextView
-		android:id="@+id/Row_Keep_numKeep"
-		android:layout_width="0dp"
-		android:layout_height="0dp"
-		/>
-
-	<!--
-		<TextView
-			android:id="@+id/Row_Keep_Date"
+		<Button
+			android:id="@+id/Row_Keep_Tag"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			android:text="TextXML"
-			/>
-	-->
+			android:background="@drawable/tag_button"
+			android:textAllCaps="true"
+			android:textColor="@color/white"
+			android:textSize="8sp" />
+
+		<TextView
+			android:id="@+id/Row_Keep_Titre"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/Row_Keep_Tag"
+			android:layout_marginStart="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginBottom="8dp"
+			android:textStyle="bold" />
+
+		<TextView
+			android:id="@+id/Row_Keep_Texte"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_horizontal|end"
+			android:layout_marginLeft="8dp"
+			android:layout_marginBottom="8dp"
+			android:layout_below="@id/Row_Keep_Titre" />
+	</RelativeLayout>
 </FrameLayout>
