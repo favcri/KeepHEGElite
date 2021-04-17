@@ -190,12 +190,12 @@ public class RecyclerViewFragment extends Fragment {
 
 	@SuppressLint("LongLogTag")
 	private void initDataset() {
-		Keep keep = new Keep ("Keep 1", "Un texte 1 de la BDD", "FF0000");
+		Keep keep = new Keep ("Keep 1", "Un texte 1 de la BDD", "D5FF632E");
 //		Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte() + " :: " + keep.getColor());
 		long idKeep = db.insertKeep (keep);
 //		Keep keepDB = db.getKeep(idKeep);
 //		Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
-		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD"));
+		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD", "C6C58BFF"));
 //		db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
 //		db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
 		mKeeps = db.getAllKeeps();

@@ -17,6 +17,7 @@ public class Keep {
 	public static final String COLUMN_TEXTE = "texte";
 	public static final String COLUMN_TAG = "tag";
 	public static final String COLUMN_COLOR = "bg_color";
+	public static final String COLUMN_DATE = "date";
 	public static final String CREATE_TABLE =
 			"CREATE TABLE " + TABLE_NAME + "("
 					+ COLUMN_NUM + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -24,7 +25,8 @@ public class Keep {
 					+ COLUMN_TITRE + " TEXT,"
 					+ COLUMN_TEXTE + " TEXT,"
 					+ COLUMN_TAG + " TEXT,"
-					+ COLUMN_COLOR + " TEXT"
+					+ COLUMN_COLOR + " TEXT,"
+					+ COLUMN_DATE + " TEXT"
 					+ ")";
 
 	private String titre;
@@ -33,7 +35,8 @@ public class Keep {
 	private int numKeep; // Clé unique pour Java
 	private boolean done = false;
 	private String color = "FFFFFF"; // Couleur de fond blanche par défaut
-	private LocalDate dateLimite = LocalDate.parse("2000-01-01"); // Pour éviter un NullPointerException dans KeepsAdapter
+	private String dateLimite;
+//	private LocalDate dateLimite = LocalDate.parse("2000-01-01"); // Pour éviter un NullPointerException dans KeepsAdapter
 
 	public Keep () {
 		this.numKeep = atomicInteger.getAndIncrement();
@@ -52,13 +55,15 @@ public class Keep {
 		this.color = color;
 	}
 
-	public Keep (String titre, String texte, LocalDate dateLimite) {
+	public Keep (String titre, String texte, String color, String dateLimite) {
+		this ();
 		this.titre = titre;
 		this.texte = texte;
+		this.color = color;
 		this.dateLimite = dateLimite;
 	}
 
-	public Keep (String titre, String texte, String tag, boolean done, LocalDate dateLimite) {
+	public Keep (String titre, String texte, String tag, boolean done, String dateLimite) {
 		this.titre = titre;
 		this.texte = texte;
 		this.dateLimite = dateLimite;
@@ -66,10 +71,12 @@ public class Keep {
 		this.done = done;
 	}
 
-	public Keep(String titre, String texte, String color, String tag) {
-		this (titre, texte, color);
-		this.tag = tag;
-	}
+//	public Keep(String titre, String texte, String color, String tag) {
+//		this.titre = titre;
+//		this.texte = texte;
+//		this.color = color;
+//		this.tag = tag;
+//	}
 
 	/**
 	 * Constructeur seulement pour getKeep dans KeepDBHelper (ici on incrémente pas @param numKeep)
@@ -80,6 +87,15 @@ public class Keep {
 		this.color = color;
 		this.tag = tag;
 		this.numKeep = numKeep;
+	}
+
+	public Keep(String titre, String texte, String color, String tag, int numKeep, String dateLimite) {
+		this.titre = titre;
+		this.texte = texte;
+		this.color = color;
+		this.tag = tag;
+		this.numKeep = numKeep;
+		this.dateLimite = dateLimite;
 	}
 
 	public String getTitre() {
@@ -106,7 +122,7 @@ public class Keep {
 		this.done = done;
 	}
 
-	public LocalDate getDateLimite() {
+	public String getDateLimite() {
 		return dateLimite;
 	}
 
@@ -118,7 +134,7 @@ public class Keep {
 		this.color = color;
 	}
 
-	public void setDateLimite(LocalDate dateLimite) {
+	public void setDateLimite(String dateLimite) {
 		this.dateLimite = dateLimite;
 	}
 

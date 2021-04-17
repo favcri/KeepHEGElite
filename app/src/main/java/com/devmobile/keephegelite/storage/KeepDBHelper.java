@@ -12,12 +12,13 @@ import androidx.annotation.RequiresApi;
 
 import com.devmobile.keephegelite.business.Keep;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class KeepDBHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "keeps_db";
 
 	public KeepDBHelper(Context context) {
@@ -45,7 +46,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
 //		values.put(Keep.COLUMN_TAG, keep.getTag());
-		Log.d("L'Les values : ", values.toString());
+//		Log.d("L'Les values : ", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
 		return id;
@@ -67,12 +68,12 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	public Keep getKeep(int numKeep) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP},
+				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
 				Keep.COLUMN_NUM_KEEP + " = ?",
 				new String[]{String.valueOf(numKeep)}, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
-		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)));
+		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)));
 		cursor.close();
 		return keep;
 	}
@@ -84,7 +85,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
 			do {
-				Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)));
+				Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)));
 				keeps.add(keep);
 			} while (cursor.moveToNext());
 		}
@@ -117,13 +118,15 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 				new String[]{String.valueOf(titre)});
 	}
 
-	public int updateKeep (int id, String titre, String texte, String color) {
+	public int updateKeep (int id, String titre, String texte, String color, String localDate) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, titre);
 		values.put(Keep.COLUMN_TEXTE, texte);
 		values.put(Keep.COLUMN_COLOR, color);
-		Log.d("L'values d'update", values.toString());
+		values.put(Keep.COLUMN_DATE, localDate);
+//		values.put(Keep.COLUMN_DATE, String.valueOf(localDate));
+//		Log.d("L'date insert update", String.valueOf(localDate));
 		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_NUM_KEEP + " = ?", new String[]{String.valueOf(id)});
 	}
 }
