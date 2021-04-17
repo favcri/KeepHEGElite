@@ -3,17 +3,27 @@ package com.devmobile.keephegelite.views;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
+import java.util.Calendar;
 
 // TODO : Ne pas ajouter si vide !!!
 
@@ -22,6 +32,9 @@ public class NewKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
+	private Button date;
+	private Button color;
+	private String colorStr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +43,54 @@ public class NewKeep extends AppCompatActivity {
 		db = new KeepDBHelper(this);
 		titre = (EditText) findViewById(R.id.New_Keep_Titre);
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
+		date = (Button) findViewById(R.id.New_Keep_Date);
+		color = (Button) findViewById(R.id.New_Keep_Color);
 		titre.setHint("Votre titre ici");
 		texte.setHint("Votre texte ici");
+		date.setText("Ajouter une date");
+		date.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(year).append(monthOfYear).append(dayOfMonth);
+						date.setText(sb.toString());
+					}
+				};
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(NewKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.show();
+			}
+		});
+		color.setText("Ajouter une couleur");
+		color.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ColorPickerDialogBuilder
+						.with(NewKeep.this)
+						.setTitle("Choisissez votre couleur de fond")
+						.initialColor(0xFFF)
+						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+						.density(12)
+						.setPositiveButton("OK", new ColorPickerClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+								color.setBackgroundColor(selectedColor);
+								colorStr = Integer.toHexString(selectedColor);
+							}
+						})
+						.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+							}
+						})
+						.showColorEdit(false)
+						.build()
+						.show();
+			}
+		});
 	}
 
 	@Override
@@ -64,7 +123,8 @@ public class NewKeep extends AppCompatActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
-			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString()));
+			Log.d("L'color new", colorStr);
+			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, date.getText().toString()));
 		}
 	}
 }

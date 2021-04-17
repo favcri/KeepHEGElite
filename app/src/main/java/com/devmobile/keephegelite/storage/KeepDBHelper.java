@@ -37,13 +37,14 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	}
 
 	public long insertKeep(Keep keep) {
-		String color = keep.getColor();
+//		String color = keep.getColor();
 //		Log.d("L'couleur injecte", color);
 		SQLiteDatabase db = this.getWritableDatabase(); // Pour pouvoir écrire dans la BDD
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
-		values.put(Keep.COLUMN_COLOR, color);
+		values.put(Keep.COLUMN_COLOR, keep.getColor());
 		values.put(Keep.COLUMN_TEXTE, keep.getTexte());
+		values.put(Keep.COLUMN_DATE, keep.getDateLimite());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
 //		values.put(Keep.COLUMN_TAG, keep.getTag());
 //		Log.d("L'Les values : ", values.toString());

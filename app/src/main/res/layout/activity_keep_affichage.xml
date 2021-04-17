@@ -27,18 +27,12 @@
 		android:ems="10"
 		android:inputType="textMultiLine"
 		android:scrollbars="vertical" />
+
 	<Button
 		android:id="@+id/Affichage_Keep_Date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/Affichage_Keep_Texte"
-		android:layout_marginTop="30dp"
-		/>
 
-	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_marginBottom="70dp"
-		android:textStyle="italic" />
+		android:layout_marginTop="30dp" />
 </RelativeLayout>

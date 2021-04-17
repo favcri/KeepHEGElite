@@ -78,12 +78,6 @@ public class AffichageKeep extends AppCompatActivity {
 					datePickerDialog.show();
 				}
 			});
-//			if (keep.getDateLimite() == null)
-//				date.setText("null");
-//			else {
-//				date.setText(keep.getDateLimite().toString());
-//				Log.d("L'date print", keep.getDateLimite().toString());
-//			}
 			modifiable (titre);
 			modifiable (texte);
 		}
@@ -131,7 +125,6 @@ public class AffichageKeep extends AppCompatActivity {
 							}
 						})
 						.showColorEdit(false)
-//						.setColorEditTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_bright))
 						.build()
 						.show();
 				return true;
@@ -183,9 +176,5 @@ public class AffichageKeep extends AppCompatActivity {
 				}
 			});
 			builder.show();
-//		}
-//		else {
-//			AffichageKeep.super.onBackPressed();
-//		}
 	}
 }

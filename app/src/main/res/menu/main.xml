@@ -7,7 +7,4 @@
 	<item
 		android:id="@+id/menu_delete"
 		android:title="Supprimer le Keep" />
-	<item
-		android:id="@+id/menu_date"
-		android:title="Ajouter une date" />
 </menu>

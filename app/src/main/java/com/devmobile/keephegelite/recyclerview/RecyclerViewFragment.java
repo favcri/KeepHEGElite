@@ -58,16 +58,13 @@ public class RecyclerViewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
-//		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.RecyclerSwipe);
-//		this.configureSwipeRefreshLayout();
-		rootView.findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
-			@Override // FAB à placer comme il faut... mais ou ??
+		rootView.findViewById(R.id.Bouton_New_Keep).setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(rootView.getContext(), NewKeep.class);
 				rootView.getContext().startActivity(intent);
 			}
 		});
-//		rootView.findViewById(R.id.menu_color).setVisibility(View.INVISIBLE);
 		rootView.setTag(TAG);
 
 		// BEGIN_INCLUDE(initializeRecyclerView)
@@ -195,7 +192,7 @@ public class RecyclerViewFragment extends Fragment {
 		long idKeep = db.insertKeep (keep);
 //		Keep keepDB = db.getKeep(idKeep);
 //		Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
-		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD", "C6C58BFF"));
+		db.insertKeep (new Keep("Keep 2", "Un textee 2 de la BDD", "D274EEFF"));
 //		db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
 //		db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
 		mKeeps = db.getAllKeeps();
