@@ -3,6 +3,7 @@ package com.devmobile.keephegelite.common.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,7 @@ public class SplashScreen extends AppCompatActivity {
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run(){
+				Log.d("L'jpasse la", "coucou");
 				Intent spIntent = new Intent(SplashScreen.this, MainActivity.class);
 				startActivity(spIntent);
 				finish();
