@@ -2,12 +2,15 @@ package com.devmobile.keephegelite.recyclerview;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.GnssAntennaInfo;
+import android.net.sip.SipSession;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -15,20 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
+import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.devmobile.keephegelite.views.AffichageKeep;
 
 import java.util.List;
+
+// TODO : Faire pour que le RecyclerView se refresh tout seul quand il y a changement (ou clique sur le tag)
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> {
 	private static final String TAG = "KeepsAdapter";
 	private List<Keep> mKeeps;
+	private KeepDBHelper db;
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 		private Keep keep;
 		private final TextView tvTitre;
 		private final TextView tvTexte;
-		private final TextView tvTag;
+		private final Button bTag;
 
 		public ViewHolder(@NonNull View itemView) {
 			super(itemView);
@@ -36,15 +43,20 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(itemView.getContext() , AffichageKeep.class);
-//					intent.putExtra("KeepTitre", tvTitre.getText().toString());
-//					intent.putExtra("Keep", numKeep.getText().toString());
 					intent.putExtra("Keep", keep.getNumKeep());
 					itemView.getContext().startActivity(intent);
 				}
 			});
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
-			this.tvTag = (TextView) itemView.findViewById(R.id.Row_Keep_Tag);
+			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
+			this.bTag.setVisibility(View.GONE); // En attendant que le clic sur le tag fonctionne
+//			this.bTag.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//
+//				}
+//			});
 		}
 
 		public void setBackgroundColor (String color) {
@@ -62,8 +74,8 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		public TextView getTvTexte() {
 			return this.tvTexte;
 		}
-		public TextView getTvTag() {
-			return this.tvTag;
+		public TextView getbTag() {
+			return this.bTag;
 		}
 	}
 
@@ -80,7 +92,12 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 		viewHolder.keep = mKeeps.get(position);
-		viewHolder.getTvTag().setText(mKeeps.get(position).getTag());
+//		viewHolder.getbTag().setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) { // Pour afficher que les Keeps qui ont le même tag
+//			}
+//		});
+		viewHolder.getbTag().setText(mKeeps.get(position).getTag());
 		viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
 		viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());

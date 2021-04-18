@@ -57,7 +57,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	public Keep getKeep(long id) {
 		SQLiteDatabase db = this.getReadableDatabase(); // Pour pouvoir lire dans la BDD
 		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP},
+				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP},
 				Keep.COLUMN_NUM + " = ?",
 				new String[]{String.valueOf(id)}, null, null, null, null);
 		if (cursor != null)
@@ -70,7 +70,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	public Keep getKeep(int numKeep) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[] {Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
+				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
 				Keep.COLUMN_NUM_KEEP + " = ?",
 				new String[]{String.valueOf(numKeep)}, null, null, null, null);
 		if (cursor != null)
@@ -80,6 +80,21 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		return keep;
 	}
 
+	public List<Keep> getAllKeepsByTag(String tag) {
+		List<Keep> keeps = new ArrayList<>();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.query(Keep.TABLE_NAME,
+				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
+				Keep.COLUMN_TAG + " = ?", new String[]{String.valueOf(tag)}, null, null, null, null);
+		if (cursor.moveToFirst()) {
+			do {
+				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE))));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		return keeps;
+	}
+
 	public List<Keep> getAllKeeps() {
 		List<Keep> keeps = new ArrayList<>();
 		String selectQuery = "SELECT * FROM " + Keep.TABLE_NAME + " ORDER BY " + Keep.COLUMN_NUM + " DESC";
@@ -87,40 +102,36 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
 			do {
-				Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)));
-				keeps.add(keep);
+				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE))));
 			} while (cursor.moveToNext());
 		}
 		db.close();
 		return keeps;
 	}
 
-	public int deleteKeep (String titre) {
+	public int deleteKeep(String titre) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		int numero = db.delete(Keep.TABLE_NAME, Keep.COLUMN_TITRE + " = ?",
-				new String[]{String.valueOf(titre)});
+		int numero = db.delete(Keep.TABLE_NAME, Keep.COLUMN_TITRE + " = ?", new String[]{String.valueOf(titre)});
 		db.close();
 		return numero;
 	}
 
-	public int deleteKeep (int id) {
+	public int deleteKeep(int id) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		int numero = db.delete(Keep.TABLE_NAME, Keep.COLUMN_NUM_KEEP + " = ?",
-				new String[]{String.valueOf(id)});
+		int numero = db.delete(Keep.TABLE_NAME, Keep.COLUMN_NUM_KEEP + " = ?", new String[]{String.valueOf(id)});
 		db.close();
 		return numero;
 	}
 
 
-	public int updateKeep (String titre, String texte) {
+	public int updateKeep(String titre, String texte) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TEXTE, texte);
-		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_TITRE + " = ?",
-				new String[]{String.valueOf(titre)});
+		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_TITRE + " = ?", new String[]{String.valueOf(titre)});
 	}
 
-	public int updateKeep (int id, String titre, String texte, String color, String localDate) {
+	public int updateKeep(int id, String titre, String texte, String color, String localDate) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, titre);
