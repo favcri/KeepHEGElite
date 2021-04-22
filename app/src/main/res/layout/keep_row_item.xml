@@ -42,5 +42,9 @@
 			android:layout_marginLeft="8dp"
 			android:layout_marginBottom="8dp"
 			android:layout_below="@id/Row_Keep_Titre" />
+		<ImageView
+			android:id="@+id/Row_Keep_Image"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
 	</RelativeLayout>
 </FrameLayout>

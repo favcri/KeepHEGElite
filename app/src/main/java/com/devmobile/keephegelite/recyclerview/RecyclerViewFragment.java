@@ -11,6 +11,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import androidx.annotation.RequiresApi;
@@ -25,6 +28,8 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.devmobile.keephegelite.views.NewKeep;
 
 import java.util.List;
+
+import static java.lang.String.*;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class RecyclerViewFragment extends Fragment {
@@ -47,6 +52,21 @@ public class RecyclerViewFragment extends Fragment {
 	protected List<Keep> mKeeps;
 	private KeepDBHelper db;
 
+	private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			//TODO: Step 4 of 4: Finally call getTag() on the view.
+			// This viewHolder will have all required values.
+			RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+			int position = viewHolder.getAdapterPosition();
+			// viewHolder.getItemId();
+			// viewHolder.getItemViewType();
+			// viewHolder.itemView;
+			Keep thisItem = mKeeps.get(position);
+			Toast.makeText(getContext(), "You Clicked: " + thisItem.getTitre(), Toast.LENGTH_SHORT).show();
+		}
+	};
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,6 +77,8 @@ public class RecyclerViewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+		swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe);
+		this.configureSwipeRefreshLayout();
 		rootView.findViewById(R.id.Bouton_New_Keep).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -82,10 +104,13 @@ public class RecyclerViewFragment extends Fragment {
 					.getSerializable(KEY_LAYOUT_MANAGER);
 		}
 		setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
 		mAdapter = new KeepsAdapter (mKeeps);
 		// Set CustomAdapter as the adapter for RecyclerView.
 		mRecyclerView.setAdapter(mAdapter);
+		mAdapter.setOnItemClickListener(onItemClickListener);
 		deleteItem(mRecyclerView);
 		// END_INCLUDE(initializeRecyclerView)
 
@@ -141,7 +166,9 @@ public class RecyclerViewFragment extends Fragment {
 			public void onRefresh() {
 				mKeeps.clear();
 				mKeeps = db.getAllKeeps();
-				mAdapter.notifyDataSetChanged();
+//				mAdapter.notifyDataSetChanged();
+				mRecyclerView.setAdapter(mAdapter);
+//				deleteItem(mRecyclerView);
 			}
 		});
 	}

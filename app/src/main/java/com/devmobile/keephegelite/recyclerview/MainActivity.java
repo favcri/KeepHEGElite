@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.common.activities.SampleActivityBase;
 
@@ -25,6 +27,11 @@ public class MainActivity extends SampleActivityBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+//		ImageView imageView = (ImageView) findViewById(R.id.image);
+		Glide
+				.with(this)
+				.load(getResources().getIdentifier("ic_google_keep_icon.xml", "drawable", this.getPackageName()))
+				.into((ImageView) findViewById(R.id.image_main));
 //		findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
 //			@Override
 //			public void onClick(View v) {

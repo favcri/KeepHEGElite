@@ -4,8 +4,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.time.LocalDate;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.sql.Types.BLOB;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Keep {
@@ -18,6 +19,7 @@ public class Keep {
 	public static final String COLUMN_TAG = "tag";
 	public static final String COLUMN_COLOR = "bg_color";
 	public static final String COLUMN_DATE = "date";
+	public static final String COLUMN_IMG = "image";
 	public static final String CREATE_TABLE =
 			"CREATE TABLE " + TABLE_NAME + "("
 					+ COLUMN_NUM + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -26,7 +28,8 @@ public class Keep {
 					+ COLUMN_TEXTE + " TEXT,"
 					+ COLUMN_TAG + " TEXT,"
 					+ COLUMN_COLOR + " TEXT,"
-					+ COLUMN_DATE + " TEXT"
+					+ COLUMN_DATE + " TEXT,"
+					+ COLUMN_DATE + BLOB
 					+ ")";
 
 	private String titre;
