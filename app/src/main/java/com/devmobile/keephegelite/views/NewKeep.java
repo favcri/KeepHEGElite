@@ -34,6 +34,7 @@ public class NewKeep extends AppCompatActivity {
 	private EditText texte;
 	private Button date;
 	private Button color;
+	private Button save;
 	private String colorStr;
 
 	@Override
@@ -45,9 +46,11 @@ public class NewKeep extends AppCompatActivity {
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
 		date = (Button) findViewById(R.id.New_Keep_Date);
 		color = (Button) findViewById(R.id.New_Keep_Color);
+		save = (Button) findViewById(R.id.New_Keep_Save);
 		titre.setHint("Votre titre ici");
 		texte.setHint("Votre texte ici");
 		date.setText("Ajouter une date");
+		save.setText("Enregistrer le Keep");
 		date.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -89,6 +92,13 @@ public class NewKeep extends AppCompatActivity {
 						.showColorEdit(false)
 						.build()
 						.show();
+			}
+		});
+		save.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+//				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
+				onBackPressed();
 			}
 		});
 	}
