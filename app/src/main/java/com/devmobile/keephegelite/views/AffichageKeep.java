@@ -34,7 +34,6 @@ public class AffichageKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
-	private Button date;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,6 @@ public class AffichageKeep extends AppCompatActivity {
 		titre.setFocusable(false);
 		texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
 		texte.setFocusable(false);
-		date = (Button) findViewById(R.id.Affichage_Keep_Date);
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
 			keep = db.getKeep(numKeep);
@@ -55,26 +53,6 @@ public class AffichageKeep extends AppCompatActivity {
 			view.setBackgroundColor(Color.parseColor(formatCouleur(keep.getColor())));
 			titre.setText(keep.getTitre());
 			texte.setText(keep.getTexte());
-			if (keep.getDateLimite() == null)
-				date.setText("Ajouter une date");
-			else
-				date.setText(keep.getDateLimite());
-			date.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-						@Override
-						public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-							StringBuilder sb = new StringBuilder();
-							sb.append(year).append(monthOfYear).append(dayOfMonth);
-							keep.setDateLimite(sb.toString());
-						}
-					};
-					Calendar c = Calendar.getInstance();
-					DatePickerDialog datePickerDialog = new DatePickerDialog(AffichageKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-					datePickerDialog.show();
-				}
-			});
 			modifiable (titre);
 			modifiable (texte);
 		}
@@ -97,6 +75,10 @@ public class AffichageKeep extends AppCompatActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (keep.getDateLimite() == null)
+			menu.findItem(R.id.menu_date).setTitle("Ajouter une date");
+		else
+			menu.findItem(R.id.menu_date).setTitle("Changer la date");
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -125,7 +107,6 @@ public class AffichageKeep extends AppCompatActivity {
 						.showColorEdit(false)
 						.build()
 						.show();
-
 				return true;
 			case R.id.menu_delete:
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -143,6 +124,18 @@ public class AffichageKeep extends AppCompatActivity {
 				});
 				builder.show();
 				return true;
+			case R.id.menu_date:
+				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(year).append(monthOfYear).append(dayOfMonth);
+						keep.setDateLimite(sb.toString());
+					}
+				};
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(AffichageKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.show();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -155,10 +148,6 @@ public class AffichageKeep extends AppCompatActivity {
 			builder.setMessage("Voulez-vous garder vos modifications ?");
 			builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-//					Log.d("L'date insert on back", keep.getDateLimite().toString());
-//					if (keep.getDateLimite() == null)
-//						db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), String.of(2100, 01, 01));
-//					else
 					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getDateLimite());
 					AffichageKeep.super.onBackPressed();
 				}
@@ -178,11 +167,11 @@ public class AffichageKeep extends AppCompatActivity {
 //		}
 	}
 
-	protected String formatCouleur (String color) {
+	protected String formatCouleur (String color) { // Pour éviter des bugs de parsing
 		StringBuilder sbColor = new StringBuilder();
 		if (!keep.getColor().substring(0, 0).contains("#"))
 			sbColor.append("#");
-		sbColor.append(keep.getColor());
+		sbColor.append(color);
 		return sbColor.toString();
 	}
 }

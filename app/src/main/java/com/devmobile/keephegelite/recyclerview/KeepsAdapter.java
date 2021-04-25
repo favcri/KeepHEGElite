@@ -76,7 +76,6 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		private final TextView tvTitre;
 		private final TextView tvTexte;
 		private final Button bTag;
-//		private final ImageView imageView;
 
 		public ViewHolder(View itemView) {
 			super(itemView);
@@ -94,7 +93,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 //			});
 		}
 
-		public void setBackgroundColor (String color) {
+		public void setBackgroundColor (String color) { // Pour éviter des bugs de parsing
 			StringBuilder sbColor = new StringBuilder();
 			if (!color.substring(0, 0).contains("#"))
 				sbColor.append("#");

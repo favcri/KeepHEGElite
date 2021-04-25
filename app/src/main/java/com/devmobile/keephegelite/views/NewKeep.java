@@ -36,6 +36,7 @@ public class NewKeep extends AppCompatActivity {
 	private Button color;
 	private Button save;
 	private String colorStr;
+	private String dateStr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,33 +45,36 @@ public class NewKeep extends AppCompatActivity {
 		db = new KeepDBHelper(this);
 		titre = (EditText) findViewById(R.id.New_Keep_Titre);
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
-		date = (Button) findViewById(R.id.New_Keep_Date);
-		color = (Button) findViewById(R.id.New_Keep_Color);
+//		date = (Button) findViewById(R.id.New_Keep_Date);
+//		color = (Button) findViewById(R.id.New_Keep_Color);
 		save = (Button) findViewById(R.id.New_Keep_Save);
 		titre.setHint("Votre titre ici");
 		texte.setHint("Votre texte ici");
-		date.setText("Ajouter une date");
 		save.setText("Enregistrer le Keep");
-		date.setOnClickListener(new View.OnClickListener() {
+		save.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-					@Override
-					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-						StringBuilder sb = new StringBuilder();
-						sb.append(year).append(monthOfYear).append(dayOfMonth);
-						date.setText(sb.toString());
-					}
-				};
-				Calendar c = Calendar.getInstance();
-				DatePickerDialog datePickerDialog = new DatePickerDialog(NewKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-				datePickerDialog.show();
+				onBackPressed();
 			}
 		});
-		color.setText("Ajouter une couleur");
-		color.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.menu_delete).setVisible(false);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch(item.getItemId()) {
+			case R.id.menu_color:
 				ColorPickerDialogBuilder
 						.with(NewKeep.this)
 						.setTitle("Choisissez votre couleur de fond")
@@ -92,37 +96,19 @@ public class NewKeep extends AppCompatActivity {
 						.showColorEdit(false)
 						.build()
 						.show();
-			}
-		});
-		save.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem actionViewItem = menu.findItem(R.id.menu_color);
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
-			case R.id.menu_color:
-				Toast.makeText(this, "Menu couleur", Toast.LENGTH_SHORT).show();
 				return true;
-			case R.id.menu_delete:
-				Toast.makeText(this, "Menu supprimer note", Toast.LENGTH_SHORT).show();
-				return true;
+			case R.id.menu_date:
+				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(year).append(monthOfYear).append(dayOfMonth);
+						dateStr = sb.toString();
+					}
+				};
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(NewKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.show();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -132,10 +118,10 @@ public class NewKeep extends AppCompatActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
-			if (colorStr == null)
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", null, date.getText().toString()));
+			if (colorStr == null) // Init la couleur à blanc si c'est vide
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", null, dateStr));
 			else
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, dateStr));
 		}
 	}
 }

@@ -85,13 +85,6 @@ public class Keep {
 		this.done = done;
 	}
 
-//	public Keep(String titre, String texte, String color, String tag) {
-//		this.titre = titre;
-//		this.texte = texte;
-//		this.color = color;
-//		this.tag = tag;
-//	}
-
 	/**
 	 * Constructeur seulement pour getKeep dans KeepDBHelper (ici on incrémente pas @param numKeep)
 	 */

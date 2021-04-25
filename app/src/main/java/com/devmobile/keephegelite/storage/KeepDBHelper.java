@@ -37,8 +37,6 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	}
 
 	public long insertKeep(Keep keep) {
-//		String color = keep.getColor();
-//		Log.d("L'couleur injecte", color);
 		SQLiteDatabase db = this.getWritableDatabase(); // Pour pouvoir écrire dans la BDD
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, keep.getTitre());
@@ -47,7 +45,6 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_TAG, keep.getTag());
 		values.put(Keep.COLUMN_DATE, keep.getDateLimite());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
-//		values.put(Keep.COLUMN_TAG, keep.getTag());
 //		Log.d("L'es values", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
@@ -123,14 +120,6 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		return numero;
 	}
 
-
-	public int updateKeep(String titre, String texte) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(Keep.COLUMN_TEXTE, texte);
-		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_TITRE + " = ?", new String[]{String.valueOf(titre)});
-	}
-
 	public int updateKeep(int id, String titre, String texte, String color, String localDate) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -138,8 +127,6 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_TEXTE, texte);
 		values.put(Keep.COLUMN_COLOR, color);
 		values.put(Keep.COLUMN_DATE, localDate);
-//		values.put(Keep.COLUMN_DATE, String.valueOf(localDate));
-//		Log.d("L'date insert update", String.valueOf(localDate));
 		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_NUM_KEEP + " = ?", new String[]{String.valueOf(id)});
 	}
 }
