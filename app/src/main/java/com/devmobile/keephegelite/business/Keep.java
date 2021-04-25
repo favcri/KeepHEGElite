@@ -1,6 +1,7 @@
 package com.devmobile.keephegelite.business;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -43,6 +44,7 @@ public class Keep {
 
 	public Keep () {
 		this.numKeep = atomicInteger.getAndIncrement();
+		Log.d("L'atomic", atomicInteger.toString());
 	}
 
 	public Keep (String titre, String texte) {

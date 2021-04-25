@@ -48,7 +48,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_DATE, keep.getDateLimite());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
 //		values.put(Keep.COLUMN_TAG, keep.getTag());
-//		Log.d("L'Les values : ", values.toString());
+//		Log.d("L'es values", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
 		return id;

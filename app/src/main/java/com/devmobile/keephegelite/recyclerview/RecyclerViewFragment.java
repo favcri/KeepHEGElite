@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
+import com.devmobile.keephegelite.views.AffichageKeep;
 import com.devmobile.keephegelite.views.NewKeep;
 
 import java.util.List;
@@ -52,20 +53,21 @@ public class RecyclerViewFragment extends Fragment {
 	protected List<Keep> mKeeps;
 	private KeepDBHelper db;
 
-//	private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-//		@Override
-//		public void onClick(View view) {
-			//TODO: Step 4 of 4: Finally call getTag() on the view.
-			// This viewHolder will have all required values.
-//			RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-//			int position = viewHolder.getAdapterPosition();
-			// viewHolder.getItemId();
-			// viewHolder.getItemViewType();
-			// viewHolder.itemView;
-//			Keep thisItem = mKeeps.get(position);
-//			Toast.makeText(getContext(), "You Clicked: " + thisItem.getTitre(), Toast.LENGTH_SHORT).show();
-//		}
-//	};
+	private View.OnClickListener onItemClickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View view) {
+			RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+			int position = viewHolder.getAdapterPosition();
+			Keep keep = mKeeps.get(position);
+			Intent intent = new Intent(view.getContext() , AffichageKeep.class);
+			intent.putExtra("Keep", keep.getNumKeep());
+			view.getContext().startActivity(intent);
+//			 viewHolder.getItemId();
+//			 viewHolder.getItemViewType();
+//			 viewHolder.itemView;
+			Toast.makeText(getContext(), "You Clicked: " + keep.getTitre() + " : " + keep.getNumKeep(), Toast.LENGTH_SHORT).show();
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +112,7 @@ public class RecyclerViewFragment extends Fragment {
 		mAdapter = new KeepsAdapter (mKeeps);
 		// Set CustomAdapter as the adapter for RecyclerView.
 		mRecyclerView.setAdapter(mAdapter);
-//		mAdapter.setOnItemClickListener(onItemClickListener);
+		mAdapter.setOnItemClickListener(onItemClickListener);
 		deleteItem(mRecyclerView);
 		// END_INCLUDE(initializeRecyclerView)
 

@@ -81,16 +81,16 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		public ViewHolder(View itemView) {
 			super(itemView);
 			itemView.setTag(this);
-//			itemView.setOnClickListener(mOnItemClickListener);
-			itemView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(itemView.getContext() , AffichageKeep.class);
-					intent.putExtra("Keep", keep.getNumKeep());
-					itemView.getContext().startActivity(intent);
-					Toast.makeText(itemView.getContext(), "Clic : " + keep.getTitre(), Toast.LENGTH_SHORT).show();
-				}
-			});
+			itemView.setOnClickListener(mOnItemClickListener);
+//			itemView.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					Intent intent = new Intent(itemView.getContext() , AffichageKeep.class);
+//					intent.putExtra("Keep", keep.getNumKeep());
+//					itemView.getContext().startActivity(intent);
+//					Toast.makeText(itemView.getContext(), "Clic : " + keep.getTitre(), Toast.LENGTH_SHORT).show();
+//				}
+//			});
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
 //			this.imageView = (ImageView) itemView.findViewById(R.id.Row_Keep_Image);

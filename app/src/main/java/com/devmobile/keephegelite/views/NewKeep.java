@@ -97,7 +97,6 @@ public class NewKeep extends AppCompatActivity {
 		save.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
 				onBackPressed();
 			}
 		});
@@ -133,8 +132,10 @@ public class NewKeep extends AppCompatActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
-//			Log.d("L'color new", colorStr);
-			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
+			if (colorStr == null)
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", null, date.getText().toString()));
+			else
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
 		}
 	}
 }
