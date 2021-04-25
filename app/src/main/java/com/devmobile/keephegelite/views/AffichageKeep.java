@@ -51,11 +51,7 @@ public class AffichageKeep extends AppCompatActivity {
 			keep = db.getKeep(numKeep);
 			k = keep;
 			View view = findViewById(R.id.Affichage_Keep);
-			StringBuilder sbColor = new StringBuilder();
-			if (!keep.getColor().substring(0, 0).contains("#"))
-				sbColor.append("#");
-			sbColor.append(keep.getColor());
-			view.setBackgroundColor(Color.parseColor(sbColor.toString()));
+			view.setBackgroundColor(Color.parseColor(formatCouleur(keep.getColor())));
 			titre.setText(keep.getTitre());
 			texte.setText(keep.getTexte());
 			if (keep.getDateLimite() == null)
@@ -117,6 +113,7 @@ public class AffichageKeep extends AppCompatActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
 								keep.setColor(Integer.toHexString(selectedColor));
+								findViewById(R.id.Affichage_Keep).setBackgroundColor(selectedColor);
 							}
 						})
 						.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -127,6 +124,7 @@ public class AffichageKeep extends AppCompatActivity {
 						.showColorEdit(false)
 						.build()
 						.show();
+
 				return true;
 			case R.id.menu_delete:
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -151,7 +149,7 @@ public class AffichageKeep extends AppCompatActivity {
 
 	@Override
 	public void onBackPressed() {
-//		if (!titre.getText().toString().equals(keep.getTitre()) || !texte.getText().toString().equals(keep.getTexte()) || keep.getDateLimite() != k.getDateLimite()) {
+//		if (!titre.getText().toString().equals(k.getTitre()) || !texte.getText().toString().equals(k.getTexte()) || keep.getDateLimite() != k.getDateLimite()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage("Voulez-vous garder vos modifications ?");
 			builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
@@ -160,7 +158,7 @@ public class AffichageKeep extends AppCompatActivity {
 //					if (keep.getDateLimite() == null)
 //						db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), String.of(2100, 01, 01));
 //					else
-						db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getDateLimite());
+					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getDateLimite());
 					AffichageKeep.super.onBackPressed();
 				}
 			});
@@ -176,5 +174,14 @@ public class AffichageKeep extends AppCompatActivity {
 				}
 			});
 			builder.show();
+//		}
+	}
+
+	protected String formatCouleur (String color) {
+		StringBuilder sbColor = new StringBuilder();
+		if (!keep.getColor().substring(0, 0).contains("#"))
+			sbColor.append("#");
+		sbColor.append(keep.getColor());
+		return sbColor.toString();
 	}
 }

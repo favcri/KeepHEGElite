@@ -80,7 +80,7 @@ public class NewKeep extends AppCompatActivity {
 						.setPositiveButton("OK", new ColorPickerClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
-								color.setBackgroundColor(selectedColor);
+								findViewById(R.id.New_Keep).setBackgroundColor(selectedColor);
 								colorStr = Integer.toHexString(selectedColor);
 							}
 						})
@@ -133,7 +133,7 @@ public class NewKeep extends AppCompatActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
-			Log.d("L'color new", colorStr);
+//			Log.d("L'color new", colorStr);
 			db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, date.getText().toString()));
 		}
 	}
