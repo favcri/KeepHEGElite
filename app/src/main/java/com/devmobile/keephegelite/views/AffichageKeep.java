@@ -156,7 +156,7 @@ public class AffichageKeep extends AppCompatActivity {
 			builder.setMessage("Voulez-vous garder vos modifications ?");
 			builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					Log.d("L'date insert on back", keep.getDateLimite().toString());
+//					Log.d("L'date insert on back", keep.getDateLimite().toString());
 //					if (keep.getDateLimite() == null)
 //						db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), String.of(2100, 01, 01));
 //					else
