@@ -113,7 +113,7 @@ public class RecyclerViewFragment extends Fragment {
 		// Set CustomAdapter as the adapter for RecyclerView.
 		mRecyclerView.setAdapter(mAdapter);
 		mAdapter.setOnItemClickListener(onItemClickListener);
-		deleteItem(mRecyclerView);
+//		deleteItem(mRecyclerView);
 		// END_INCLUDE(initializeRecyclerView)
 
 		mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
@@ -135,11 +135,17 @@ public class RecyclerViewFragment extends Fragment {
 		return rootView;
 	}
 
-	/**
-	 * TODO : Implémenter un long click sur un élément, le supprime :)
-	 * @param mRecyclerView
-	 */
-	private void deleteItem(RecyclerView mRecyclerView) {
+	@Override
+	public void onResume() {
+		super.onResume();
+		mKeeps.clear();
+		mKeeps = db.getAllKeeps();
+		mAdapter = new KeepsAdapter(mKeeps);
+		mRecyclerView.setAdapter(mAdapter);
+	}
+
+	private static void deleteKeep(int numKeep) {
+
 //		listViewKeeps.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 /*			@Override // Pour supprimer la note avec un long clic
 			public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {

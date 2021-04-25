@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
+import com.devmobile.keephegelite.recyclerview.RecyclerViewFragment;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;

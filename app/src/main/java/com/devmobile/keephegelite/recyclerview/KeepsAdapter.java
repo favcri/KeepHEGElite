@@ -82,19 +82,8 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			super(itemView);
 			itemView.setTag(this);
 			itemView.setOnClickListener(mOnItemClickListener);
-//			itemView.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					Intent intent = new Intent(itemView.getContext() , AffichageKeep.class);
-//					intent.putExtra("Keep", keep.getNumKeep());
-//					itemView.getContext().startActivity(intent);
-//					Toast.makeText(itemView.getContext(), "Clic : " + keep.getTitre(), Toast.LENGTH_SHORT).show();
-//				}
-//			});
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
-//			this.imageView = (ImageView) itemView.findViewById(R.id.Row_Keep_Image);
-//			Glide.with(imageView.getContext()).load("http://goo.gl/gEgYUd").into(imageView);
 			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
 			this.bTag.setVisibility(View.GONE); // En attendant que le clic sur le tag fonctionne
 //			this.bTag.setOnClickListener(new View.OnClickListener() {
