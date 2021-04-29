@@ -16,8 +16,11 @@
 			android:id="@+id/Row_Keep_Tag"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:background="@drawable/tag_button"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="8dp"
+			android:layout_marginTop="8dp"
 			android:textAllCaps="true"
+			android:background="@color/purple_200"
 			android:textColor="@color/white"
 			android:textSize="8sp" />
 
@@ -25,7 +28,6 @@
 			android:id="@+id/Row_Keep_Titre"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/Row_Keep_Tag"
 			android:layout_marginStart="8dp"
 			android:layout_marginLeft="8dp"
 			android:layout_marginTop="8dp"
@@ -41,6 +43,7 @@
 			android:layout_gravity="center_horizontal|end"
 			android:layout_marginLeft="8dp"
 			android:layout_marginBottom="8dp"
+			android:maxLines="3"
 			android:layout_below="@id/Row_Keep_Titre" />
 		<ImageView
 			android:id="@+id/Row_Keep_Image"

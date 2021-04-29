@@ -37,15 +37,20 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	@Override
 	public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 		viewHolder.keep = mKeeps.get(position);
-//		viewHolder.getbTag().setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) { // Pour afficher que les Keeps qui ont le même tag
-//			}
-//		});
-		viewHolder.getbTag().setText(mKeeps.get(position).getTag());
-		viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
-		viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
+		if (mKeeps.get(position).getTag() == null)
+			viewHolder.getbTag().setVisibility(View.GONE);
+		else
+			viewHolder.getbTag().setText(mKeeps.get(position).getTag());
+		if (mKeeps.get(position).getTitre() == null)
+			viewHolder.getTvTitre().setVisibility(View.GONE);
+		else
+			viewHolder.getTvTitre().setText(mKeeps.get(position).getTitre());
+		if (mKeeps.get(position).getTexte() == null)
+			viewHolder.getTvTexte().setVisibility(View.GONE);
+		else
+			viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());
+
 	}
 
 	@Override
