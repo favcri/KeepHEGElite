@@ -1,32 +1,21 @@
 package com.devmobile.keephegelite.recyclerview;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.location.GnssAntennaInfo;
-import android.net.sip.SipSession;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
-import com.devmobile.keephegelite.views.AffichageKeep;
 
 import java.util.List;
-
-// TODO : Faire pour que le RecyclerView se refresh tout seul quand il y a changement (ou clique sur le tag)
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> {
@@ -84,7 +73,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
 			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
-			this.bTag.setVisibility(View.GONE); // En attendant que le clic sur le tag fonctionne
+//			this.bTag.setOnClickListener(mOnItemClickListener);
 //			this.bTag.setOnClickListener(new View.OnClickListener() {
 //				@Override
 //				public void onClick(View v) {

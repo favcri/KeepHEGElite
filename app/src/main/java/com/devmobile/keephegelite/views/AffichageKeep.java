@@ -9,23 +9,22 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
-import com.devmobile.keephegelite.recyclerview.RecyclerViewFragment;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.util.Calendar;
+import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class AffichageKeep extends AppCompatActivity {
@@ -40,11 +39,11 @@ public class AffichageKeep extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		db = new KeepDBHelper(this);
 		setContentView(R.layout.activity_keep_affichage);
-		Bundle extras = getIntent().getExtras();
 		titre = (EditText) findViewById(R.id.Affichage_Keep_Titre);
 		titre.setFocusable(false);
 		texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
 		texte.setFocusable(false);
+		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
 			keep = db.getKeep(numKeep);
@@ -79,12 +78,114 @@ public class AffichageKeep extends AppCompatActivity {
 			menu.findItem(R.id.menu_date).setTitle("Ajouter une date");
 		else
 			menu.findItem(R.id.menu_date).setTitle("Changer la date");
+		if (keep.getTag() == null)
+			menu.findItem(R.id.menu_tag).setTitle("Modifier un tag");
+		else
+			menu.findItem(R.id.menu_tag).setTitle("Ajouter un tag");
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
+			case R.id.menu_tag:
+				if (keep.getTag() == null) {
+					android.app.AlertDialog.Builder builderSingle = new android.app.AlertDialog.Builder(AffichageKeep.this);
+					builderSingle.setTitle("Sélectionnez un tag existant");
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AffichageKeep.this, android.R.layout.simple_list_item_1);
+					List<String> tags = db.getAllTags();
+					arrayAdapter.addAll(tags);
+					builderSingle.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+					builderSingle.setNeutralButton("Ajouter un tag", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							android.app.AlertDialog.Builder tagDialog = new android.app.AlertDialog.Builder(AffichageKeep.this);
+							tagDialog.setTitle("Saisissez votre tag");
+							final EditText newTag = new EditText(AffichageKeep.this);
+							tagDialog.setView(newTag);
+							tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									keep.setTag(newTag.getText().toString());
+									dialog.cancel();
+								}
+							});
+							tagDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.cancel();
+								}
+							});
+							tagDialog.show();
+						}
+					});
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							keep.setTag(arrayAdapter.getItem(which));
+							dialog.cancel();
+						}
+					});
+					builderSingle.show();
+					return true;
+				}
+				else {
+					android.app.AlertDialog.Builder builderSingle = new android.app.AlertDialog.Builder(AffichageKeep.this);
+					builderSingle.setTitle("Sélectionnez un tag existant");
+					final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(AffichageKeep.this, android.R.layout.simple_list_item_1);
+					List<String> tags = db.getAllTags();
+					arrayAdapter.addAll(tags);
+					builderSingle.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+					builderSingle.setNeutralButton("Supprimez le tag en cours", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							keep.setTag(null);
+							dialog.cancel();
+						}
+					});
+					builderSingle.setNeutralButton("Ajouter un tag", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							android.app.AlertDialog.Builder tagDialog = new android.app.AlertDialog.Builder(AffichageKeep.this);
+							tagDialog.setTitle("Saisissez votre tag");
+							final EditText newTag = new EditText(AffichageKeep.this);
+							tagDialog.setView(newTag);
+							tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									keep.setTag(newTag.getText().toString());
+									dialog.cancel();
+								}
+							});
+							tagDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.cancel();
+								}
+							});
+							tagDialog.show();
+						}
+					});
+					builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							keep.setTag(arrayAdapter.getItem(which));
+							dialog.cancel();
+						}
+					});
+					builderSingle.show();
+					return true;
+				}
 			case R.id.menu_color:
 				ColorPickerDialogBuilder
 						.with(this)
@@ -148,7 +249,7 @@ public class AffichageKeep extends AppCompatActivity {
 			builder.setMessage("Voulez-vous garder vos modifications ?");
 			builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getDateLimite());
+					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getTag(), keep.getDateLimite());
 					AffichageKeep.super.onBackPressed();
 				}
 			});

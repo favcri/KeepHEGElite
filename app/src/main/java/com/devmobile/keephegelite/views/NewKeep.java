@@ -3,18 +3,18 @@ package com.devmobile.keephegelite.views;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -24,8 +24,7 @@ import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import java.util.Calendar;
-
-// TODO : Ne pas ajouter si vide !!!
+import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class NewKeep extends AppCompatActivity {
@@ -35,8 +34,9 @@ public class NewKeep extends AppCompatActivity {
 	private Button date;
 	private Button color;
 	private Button save;
-	private String colorStr;
-	private String dateStr;
+	private String colorFinal;
+	private String dateFinal;
+	private String tagFinal;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,6 @@ public class NewKeep extends AppCompatActivity {
 		db = new KeepDBHelper(this);
 		titre = (EditText) findViewById(R.id.New_Keep_Titre);
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
-//		date = (Button) findViewById(R.id.New_Keep_Date);
-//		color = (Button) findViewById(R.id.New_Keep_Color);
 		save = (Button) findViewById(R.id.New_Keep_Save);
 		titre.setHint("Votre titre ici");
 		texte.setHint("Votre texte ici");
@@ -74,6 +72,50 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
+			case R.id.menu_tag:
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(NewKeep.this);
+				builderSingle.setTitle("Sélectionnez un tag existant");
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(NewKeep.this, android.R.layout.simple_list_item_1);
+				List<String> tags = db.getAllTags();
+				arrayAdapter.addAll(tags);
+				builderSingle.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+				builderSingle.setNeutralButton("Ajouter un tag", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						AlertDialog.Builder tagDialog = new AlertDialog.Builder(NewKeep.this);
+						tagDialog.setTitle("Saisissez votre tag");
+						final EditText newTag = new EditText(NewKeep.this);
+						tagDialog.setView(newTag);
+						tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								tagFinal = newTag.getText().toString();
+								dialog.cancel();
+							}
+						});
+						tagDialog.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+							}
+						});
+						tagDialog.show();
+					}
+				});
+				builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						tagFinal = arrayAdapter.getItem(which);
+						dialog.cancel();
+					}
+				});
+				builderSingle.show();
+				return true;
 			case R.id.menu_color:
 				ColorPickerDialogBuilder
 						.with(NewKeep.this)
@@ -85,7 +127,7 @@ public class NewKeep extends AppCompatActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
 								findViewById(R.id.New_Keep).setBackgroundColor(selectedColor);
-								colorStr = Integer.toHexString(selectedColor);
+								colorFinal = Integer.toHexString(selectedColor);
 							}
 						})
 						.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -103,7 +145,7 @@ public class NewKeep extends AppCompatActivity {
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 						StringBuilder sb = new StringBuilder();
 						sb.append(year).append(monthOfYear).append(dayOfMonth);
-						dateStr = sb.toString();
+						dateFinal = sb.toString();
 					}
 				};
 				Calendar c = Calendar.getInstance();
@@ -118,10 +160,10 @@ public class NewKeep extends AppCompatActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
-			if (colorStr == null) // Init la couleur à blanc si c'est vide
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", null, dateStr));
+			if (colorFinal == null) // Init la couleur à blanc si c'est vide
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", tagFinal, dateFinal));
 			else
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorStr, null, dateStr));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorFinal, tagFinal, dateFinal));
 		}
 	}
 }

@@ -4,17 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -30,8 +24,6 @@ import com.devmobile.keephegelite.views.NewKeep;
 
 import java.util.List;
 
-import static java.lang.String.*;
-
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class RecyclerViewFragment extends Fragment {
 	private static final String TAG = "RecyclerViewFragment";
@@ -40,9 +32,6 @@ public class RecyclerViewFragment extends Fragment {
 
 	private enum LayoutManagerType {GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER}
 	protected LayoutManagerType mCurrentLayoutManagerType;
-
-//	protected RadioButton mLinearLayoutRadioButton;
-//	protected RadioButton mGridLayoutRadioButton;
 
 	protected RecyclerView mRecyclerView;
 	protected KeepsAdapter mAdapter;
