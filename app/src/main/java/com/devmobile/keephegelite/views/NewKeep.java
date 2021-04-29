@@ -90,6 +90,7 @@ public class NewKeep extends AppCompatActivity {
 						AlertDialog.Builder tagDialog = new AlertDialog.Builder(NewKeep.this);
 						tagDialog.setTitle("Saisissez votre tag");
 						final EditText newTag = new EditText(NewKeep.this);
+						newTag.setSingleLine();
 						tagDialog.setView(newTag);
 						tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
 							@Override

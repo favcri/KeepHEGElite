@@ -78,10 +78,7 @@ public class AffichageKeep extends AppCompatActivity {
 			menu.findItem(R.id.menu_date).setTitle("Ajouter une date");
 		else
 			menu.findItem(R.id.menu_date).setTitle("Changer la date");
-		if (keep.getTag() == null)
-			menu.findItem(R.id.menu_tag).setTitle("Modifier un tag");
-		else
-			menu.findItem(R.id.menu_tag).setTitle("Ajouter un tag");
+			menu.findItem(R.id.menu_tag).setTitle("Ajouter / Modifier un tag");
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -107,11 +104,12 @@ public class AffichageKeep extends AppCompatActivity {
 							android.app.AlertDialog.Builder tagDialog = new android.app.AlertDialog.Builder(AffichageKeep.this);
 							tagDialog.setTitle("Saisissez votre tag");
 							final EditText newTag = new EditText(AffichageKeep.this);
+							newTag.setSingleLine();
 							tagDialog.setView(newTag);
 							tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									keep.setTag(newTag.getText().toString());
+									keep.setTag(newTag.getText().toString().toUpperCase());
 									dialog.cancel();
 								}
 							});
@@ -159,11 +157,12 @@ public class AffichageKeep extends AppCompatActivity {
 							android.app.AlertDialog.Builder tagDialog = new android.app.AlertDialog.Builder(AffichageKeep.this);
 							tagDialog.setTitle("Saisissez votre tag");
 							final EditText newTag = new EditText(AffichageKeep.this);
+							newTag.setSingleLine();
 							tagDialog.setView(newTag);
 							tagDialog.setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog, int which) {
-									keep.setTag(newTag.getText().toString());
+									keep.setTag(newTag.getText().toString().toUpperCase());
 									dialog.cancel();
 								}
 							});
