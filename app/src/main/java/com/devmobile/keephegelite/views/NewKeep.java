@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -31,8 +32,7 @@ public class NewKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
-	private Button date;
-	private Button color;
+	private TextView date;
 	private Button save;
 	private String colorFinal;
 	private String dateFinal;
@@ -45,6 +45,7 @@ public class NewKeep extends AppCompatActivity {
 		db = new KeepDBHelper(this);
 		titre = (EditText) findViewById(R.id.New_Keep_Titre);
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
+		date = (TextView) findViewById(R.id.New_Keep_Date);
 		save = (Button) findViewById(R.id.New_Keep_Save);
 		titre.setHint("Votre titre ici");
 		texte.setHint("Votre texte ici");
@@ -147,6 +148,7 @@ public class NewKeep extends AppCompatActivity {
 						StringBuilder sb = new StringBuilder();
 						sb.append(year).append(monthOfYear).append(dayOfMonth);
 						dateFinal = sb.toString();
+						date.setText(dateFinal);
 					}
 				};
 				Calendar c = Calendar.getInstance();

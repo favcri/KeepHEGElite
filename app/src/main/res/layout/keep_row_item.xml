@@ -45,6 +45,13 @@
 			android:layout_marginBottom="8dp"
 			android:maxLines="3"
 			android:layout_below="@id/Row_Keep_Titre" />
+
+		<TextView
+			android:id="@+id/Row_Keep_Date"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@id/Row_Keep_Tag"
+			android:layout_alignParentRight="true" />
 		<ImageView
 			android:id="@+id/Row_Keep_Image"
 			android:layout_width="wrap_content"

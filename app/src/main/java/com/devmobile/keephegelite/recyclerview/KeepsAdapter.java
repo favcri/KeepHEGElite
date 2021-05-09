@@ -50,7 +50,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		else
 			viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());
-
+//		viewHolder.getTvDate().setText(mKeeps.get(position).getDateLimite());
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		private Keep keep;
 		private final TextView tvTitre;
 		private final TextView tvTexte;
+		private final TextView tvDate;
 		private final Button bTag;
 
 		public ViewHolder(View itemView) {
@@ -77,6 +78,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			itemView.setOnClickListener(mOnItemClickListener);
 			this.tvTitre = (TextView) itemView.findViewById(R.id.Row_Keep_Titre);
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
+			this.tvDate = (TextView) itemView.findViewById(R.id.Row_Keep_Date);
 			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
 //			this.bTag.setOnClickListener(mOnItemClickListener);
 //			this.bTag.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +102,9 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			return this.tvTitre;
 		}
 		public TextView getTvTexte() {
+			return this.tvTexte;
+		}
+		public TextView getTvDate() {
 			return this.tvTexte;
 		}
 		public TextView getbTag() {

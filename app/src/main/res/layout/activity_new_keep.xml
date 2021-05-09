@@ -27,6 +27,21 @@
 		android:ems="10"
 		android:inputType="textMultiLine"
 		android:scrollbars="vertical" />
+	<TextView
+		android:id="@+id/New_Keep_Titre_Date"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Date limite du Keep :"
+		android:layout_below="@id/New_Keep_Texte"
+		android:layout_marginTop="50dp"/>
+	<TextView
+		android:id="@+id/New_Keep_Date"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/New_Keep_Texte"
+		android:layout_toRightOf="@id/New_Keep_Titre_Date"
+		android:layout_marginLeft="5dp"
+		android:layout_marginTop="50dp"/>
 	<Button
 		android:id="@+id/New_Keep_Save"
 		android:layout_width="match_parent"

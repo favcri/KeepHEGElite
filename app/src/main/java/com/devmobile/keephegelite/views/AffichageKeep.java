@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -22,6 +23,8 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.List;
@@ -33,12 +36,14 @@ public class AffichageKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
+	private TextView date;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		db = new KeepDBHelper(this);
 		setContentView(R.layout.activity_keep_affichage);
+		date = (TextView) findViewById(R.id.Affichage_Keep_Date);
 		titre = (EditText) findViewById(R.id.Affichage_Keep_Titre);
 		titre.setFocusable(false);
 		texte = (EditText) findViewById(R.id.Affichage_Keep_Texte);
@@ -54,6 +59,7 @@ public class AffichageKeep extends AppCompatActivity {
 			texte.setText(keep.getTexte());
 			modifiable (titre);
 			modifiable (texte);
+			date.setText(keep.getDateLimite());
 		}
 	}
 
@@ -231,6 +237,7 @@ public class AffichageKeep extends AppCompatActivity {
 						StringBuilder sb = new StringBuilder();
 						sb.append(year).append(monthOfYear).append(dayOfMonth);
 						keep.setDateLimite(sb.toString());
+						date.setText(keep.getDateLimite());
 					}
 				};
 				Calendar c = Calendar.getInstance();
