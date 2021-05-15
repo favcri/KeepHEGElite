@@ -1,5 +1,10 @@
 package com.devmobile.keephegelite.recyclerview;
 
+import android.app.ActionBar;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
@@ -21,21 +27,6 @@ public class MainActivity extends SampleActivityBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		ImageView imageView = (ImageView) findViewById(R.id.image);
-		Glide
-				.with(this)
-				.load(getResources().getIdentifier("ic_google_keep_icon.xml", "drawable", this.getPackageName()))
-				.into((ImageView) findViewById(R.id.image_main));
-//		findViewById(R.id.fab_main).setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(getApplicationContext(), KeepAffichage.class);
-//					intent.putExtra("KeepTitre", tvTitre.getText().toString());
-//					intent.putExtra("Keep", numKeep.getText().toString());
-//				intent.putExtra("Keep", keep.getNumKeep());
-//				startActivity(intent);
-//			}
-//		});
 
 		if (savedInstanceState == null) {
 			FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -48,8 +39,8 @@ public class MainActivity extends SampleActivityBase {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-//		ActionBar actionBar = getActionBar();
-//		actionBar.setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		return true;
 	}
 

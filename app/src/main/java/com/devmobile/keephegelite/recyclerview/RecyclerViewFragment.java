@@ -1,13 +1,20 @@
 package com.devmobile.keephegelite.recyclerview;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import androidx.annotation.RequiresApi;
@@ -16,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.devmobile.keephegelite.MyNotificationPublisher;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
@@ -29,8 +37,11 @@ public class RecyclerViewFragment extends Fragment {
 	private static final String TAG = "RecyclerViewFragment";
 	private static final String KEY_LAYOUT_MANAGER = "layoutManager";
 	private static final int SPAN_COUNT = 2;
+	public static final String NOTIFICATION_CHANNEL_ID = "10001";
+	private final static String default_notification_channel_id = "default";
 
 	private enum LayoutManagerType {GRID_LAYOUT_MANAGER, LINEAR_LAYOUT_MANAGER}
+
 	protected LayoutManagerType mCurrentLayoutManagerType;
 
 	protected RecyclerView mRecyclerView;
@@ -44,7 +55,7 @@ public class RecyclerViewFragment extends Fragment {
 		public void onClick(View view) {
 			RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
 			Keep keep = mKeeps.get(viewHolder.getAdapterPosition());
-			Intent intent = new Intent(view.getContext() , AffichageKeep.class);
+			Intent intent = new Intent(view.getContext(), AffichageKeep.class);
 			intent.putExtra("Keep", keep.getNumKeep());
 			view.getContext().startActivity(intent);
 		}
@@ -53,6 +64,17 @@ public class RecyclerViewFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext())
+				.setSmallIcon(R.drawable.ic_google_keep_icon) // notification icon
+				.setContentTitle("Simple notification") // title
+				.setContentText("Hello word") // body message
+				.setAutoCancel(true); // clear notification when clicked
+		Intent intent = new Intent(getContext(), RecyclerViewFragment.class);
+//		Log.d("L'crea", mBuilder);
+		PendingIntent pi = PendingIntent.getActivity(getContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
+		mBuilder.setContentIntent(pi);
+		NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(0, mBuilder.build());
 		this.db = new KeepDBHelper(getContext());
 		initDataset();
 	}
@@ -79,7 +101,7 @@ public class RecyclerViewFragment extends Fragment {
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
 		mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-		mAdapter = new KeepsAdapter (mKeeps);
+		mAdapter = new KeepsAdapter(mKeeps);
 		mRecyclerView.setAdapter(mAdapter);
 		mAdapter.setOnItemClickListener(onItemClickListener);
 
@@ -146,7 +168,7 @@ public class RecyclerViewFragment extends Fragment {
 			long idKeep = db.insertKeep(keep);
 //			Keep keepDB = db.getKeep(idKeep);
 //			Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
-			db.insertKeep(new Keep("Keep 2", "Un textee 2 de la BDD", "D274EEFF", "Fait", "Une date"));
+//			db.insertKeep(new Keep("Keep 2", "Un textee 2 de la BDD", "D274EEFF", "Fait", "Une date"));
 //			db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
 //			db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
 		}

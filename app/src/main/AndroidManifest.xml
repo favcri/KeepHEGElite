@@ -23,6 +23,7 @@
 			android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
 		<activity android:name=".views.NewKeep"></activity>
 		<activity android:name=".views.AffichageKeep" />
+		<receiver android:name=".ReminderBroadcast" />
 	</application>
 
 </manifest>

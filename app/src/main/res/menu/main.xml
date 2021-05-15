@@ -13,4 +13,7 @@
 	<item
 		android:id="@+id/menu_tag"
 		android:title="Ajouter un tag" />
+	<item
+		android:id="@+id/menu_image"
+		android:title="Ajouter une image" />
 </menu>
