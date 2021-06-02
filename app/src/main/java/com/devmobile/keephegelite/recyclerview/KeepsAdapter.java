@@ -1,16 +1,11 @@
 package com.devmobile.keephegelite.recyclerview;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.devmobile.keephegelite.MyNotificationPublisher;
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.ReminderBroadcast;
 import com.devmobile.keephegelite.business.Keep;
@@ -35,6 +29,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	private List<Keep> mKeeps;
 	private KeepDBHelper db;
 	private static View.OnClickListener mOnItemClickListener;
+	private static View.OnClickListener mOnItemClickListenerTag;
 
 	public KeepsAdapter(List<Keep> keeps) {
 		mKeeps = keeps;
@@ -73,8 +68,9 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			return mKeeps.size();
 	}
 
-	public void setOnItemClickListener(View.OnClickListener itemClickListener) {
+	public void setOnItemClickListener(View.OnClickListener itemClickListener, Button.OnClickListener tagClickListener) {
 		mOnItemClickListener = itemClickListener;
+		mOnItemClickListenerTag = tagClickListener;
 	}
 
 //	private void createNotificationChannel() {
@@ -98,6 +94,8 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
 			this.tvDate = (TextView) itemView.findViewById(R.id.Row_Keep_Date);
 			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
+			this.bTag.setOnClickListener(mOnItemClickListenerTag);
+			this.bTag.setTag(this);
 //			scheduleNotification(getNotification("Test"), 1000 * 5);
 			setAlarm(2000);
 		}

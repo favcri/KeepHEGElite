@@ -11,18 +11,22 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.KeepHEGElite">
+		<activity android:name=".views.SelectTags"></activity>
 		<activity
 			android:name=".common.activities.SplashScreen"
 			android:label="Keep HEG Elite">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-		<activity android:name=".recyclerview.MainActivity"
-			android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"/>
-		<activity android:name=".views.NewKeep"></activity>
+		<activity
+			android:name=".recyclerview.MainActivity"
+			android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />
+		<activity android:name=".views.NewKeep" />
 		<activity android:name=".views.AffichageKeep" />
+
 		<receiver android:name=".ReminderBroadcast" />
 	</application>
 
