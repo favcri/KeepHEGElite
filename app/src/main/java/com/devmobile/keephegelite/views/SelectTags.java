@@ -29,8 +29,8 @@ public class SelectTags extends AppCompatActivity {
 		List<String> tags = db.getAllTags();
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, tags);
-		Log.d("L'salut", tags.toString());
-//		arrayAdapter.addAll(tags);
+//		Log.d("L'salut", tags.toString());
+//arrayAdapter.addAll(tags);
 		this.listView.setAdapter(arrayAdapter);
 	}
 }

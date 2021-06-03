@@ -18,6 +18,6 @@ public class ReminderBroadcast extends BroadcastReceiver {
 //				.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 //		NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 //		notificationManagerCompat.notify(200, builder.build());
-		Toast.makeText(context, "Fin !", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(context, "Fin !", Toast.LENGTH_SHORT).show();
 	}
 }

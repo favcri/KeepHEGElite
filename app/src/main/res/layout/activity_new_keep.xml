@@ -36,45 +36,49 @@
 				android:inputType="textMultiLine"
 				android:scrollbars="vertical" />
 
-			<Button
-				android:id="@+id/New_Keep_New_Date"
-				android:layout_width="match_parent"
+			<TextView
+				android:id="@+id/New_Keep_Titre_Date"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:text="Date limite du Keep : "
+				android:textStyle="bold"
 				android:layout_below="@id/New_Keep_Texte"
-				android:text="Ajouter une date"
+				android:visibility="gone"
 				android:layout_marginTop="50dp"/>
-
 			<TextView
 				android:id="@+id/New_Keep_Date"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/New_Keep_New_Date"
-				android:textStyle="bold"
-				android:textSize="30dp"
+				android:layout_below="@id/New_Keep_Texte"
+				android:layout_toRightOf="@id/New_Keep_Titre_Date"
+				android:textSize="15dp"
 				android:gravity="center"
-				android:layout_marginTop="10dp" />
-
-			<Button
-				android:id="@+id/New_Keep_Image"
-				android:layout_width="match_parent"
+				android:layout_marginTop="50dp" />
+			<TextView
+				android:id="@+id/New_Keep_Titre_Tag"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/New_Keep_Date"/>
+				android:text="Tag du Keep : "
+				android:textStyle="bold"
+				android:layout_below="@id/New_Keep_Titre_Date"
+				android:visibility="gone"
+				android:layout_marginTop="50dp"/>
+			<TextView
+				android:id="@+id/New_Keep_Tag"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/New_Keep_Titre_Date"
+				android:layout_toRightOf="@id/New_Keep_Titre_Tag"
+				android:textSize="15dp"
+				android:gravity="center"
+				android:layout_marginTop="50dp" />
 
 			<ImageView
 				android:id="@+id/New_Image"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@id/New_Keep_Image"
+				android:layout_below="@id/New_Keep_Titre_Tag"
 				android:layout_marginTop="50dp" />
-
-			<Button
-				android:id="@+id/New_Keep_Save"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@id/New_Image"
-				android:layout_gravity="center_horizontal"
-				android:layout_marginTop="50dp"
-				android:textAlignment="center" />
 		</RelativeLayout>
 	</ScrollView>
 </RelativeLayout>

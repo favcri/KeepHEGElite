@@ -32,7 +32,8 @@
 		android:id="@+id/Affichage_Keep_Titre_Date"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Date limite du Keep :"
+		android:text="Date limite du Keep : "
+		android:textStyle="bold"
 		android:layout_below="@id/Affichage_Keep_Texte"
 		android:layout_marginTop="50dp"/>
 	<TextView
@@ -43,4 +44,27 @@
 		android:layout_toRightOf="@id/Affichage_Keep_Titre_Date"
 		android:layout_marginLeft="5dp"
 		android:layout_marginTop="50dp"/>
+	<TextView
+		android:id="@+id/Affichage_Keep_Titre_Tag"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Tag du Keep : "
+		android:textStyle="bold"
+		android:layout_below="@id/Affichage_Keep_Titre_Date"
+		android:layout_marginTop="50dp"/>
+	<TextView
+		android:id="@+id/Affichage_Keep_Tag"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/Affichage_Keep_Titre_Date"
+		android:layout_toRightOf="@id/Affichage_Keep_Titre_Tag"
+		android:layout_marginLeft="5dp"
+		android:layout_marginTop="50dp"/>
+
+	<ImageView
+		android:id="@+id/Affichage_Keep_Image"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/Affichage_Keep_Titre_Tag"
+		android:layout_marginTop="50dp" />
 </RelativeLayout>

@@ -30,59 +30,51 @@ public class Keep {
 					+ COLUMN_TAG + " TEXT,"
 					+ COLUMN_COLOR + " TEXT,"
 					+ COLUMN_DATE + " TEXT,"
-					+ COLUMN_DATE + BLOB
+					+ COLUMN_IMG + " TEXT"
 					+ ")";
 
 	private String titre;
 	private String texte;
 	private String tag;
 	private int numKeep; // Clé unique pour Java
-	private boolean done = false;
 	private String color = "FFFFFF"; // Couleur de fond blanche par défaut
 	private String dateLimite;
-//	private LocalDate dateLimite = LocalDate.parse("2000-01-01"); // Pour éviter un NullPointerException dans KeepsAdapter
+	private String imagePath;
 
 	public Keep () {
+		Log.d("L'atomic c", atomicInteger.toString());
 		this.numKeep = atomicInteger.getAndIncrement();
-		Log.d("L'atomic", atomicInteger.toString());
 	}
 
-	public Keep (String titre, String texte) {
-		this();
-		this.titre = titre;
-		this.texte = texte;
-	}
+//	public Keep (String titre, String texte) {
+//		this();
+//		this.titre = titre;
+//		this.texte = texte;
+//	}
 
-	public Keep (String titre, String texte, String color) {
-		this ();
-		this.titre = titre;
-		this.texte = texte;
-		this.color = color;
-	}
+//	public Keep (String titre, String texte, String color) {
+//		this ();
+//		this.titre = titre;
+//		this.texte = texte;
+//		this.color = color;
+//	}
 
-	public Keep (String titre, String texte, String color, String tag) {
-		this ();
-		this.titre = titre;
-		this.texte = texte;
-		this.color = color;
-		this.tag = tag;
-	}
+//	public Keep (String titre, String texte, String color, String tag) {
+//		this ();
+//		this.titre = titre;
+//		this.texte = texte;
+//		this.color = color;
+//		this.tag = tag;
+//	}
 
-	public Keep (String titre, String texte, String color, String tag, String dateLimite) {
+	public Keep (String titre, String texte, String color, String tag, String dateLimite, String imagePath) {
 		this ();
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
 		this.tag = tag;
 		this.dateLimite = dateLimite;
-	}
-
-	public Keep (String titre, String texte, String tag, boolean done, String dateLimite) {
-		this.titre = titre;
-		this.texte = texte;
-		this.dateLimite = dateLimite;
-		this.tag = tag;
-		this.done = done;
+		this.imagePath = imagePath;
 	}
 
 	/**
@@ -96,13 +88,23 @@ public class Keep {
 		this.numKeep = numKeep;
 	}
 
-	public Keep(String titre, String texte, String color, String tag, int numKeep, String dateLimite) {
+	public Keep (String titre, String texte, String color, String tag, String dateLimite) {
+		this();
+		this.titre = titre;
+		this.texte = texte;
+		this.color = color;
+		this.tag = tag;
+		this.dateLimite = dateLimite;
+	}
+
+	public Keep(String titre, String texte, String color, String tag, int numKeep, String dateLimite, String imagePath) {
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
 		this.tag = tag;
 		this.numKeep = numKeep;
 		this.dateLimite = dateLimite;
+		this.imagePath = imagePath;
 	}
 
 	public String getTitre() {
@@ -119,14 +121,6 @@ public class Keep {
 
 	public void setTexte(String texte) {
 		this.texte = texte;
-	}
-
-	public boolean isDone() {
-		return done;
-	}
-
-	public void setDone(boolean done) {
-		this.done = done;
 	}
 
 	public String getDateLimite() {
@@ -161,12 +155,19 @@ public class Keep {
 		this.numKeep = numKeep;
 	}
 
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
 	@Override
 	public String toString () {
 		return "Keep {" +
 				"titre='" + titre + '\'' +
 				", texte='" + texte + '\'' +
-				", done=" + done +
 				", dateLimite=" + dateLimite +
 				'}';
 	}

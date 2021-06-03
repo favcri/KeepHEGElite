@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class KeepDBHelper extends SQLiteOpenHelper {
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 	private static final String DATABASE_NAME = "keeps_db";
 
 	public KeepDBHelper(Context context) {
@@ -44,6 +45,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 			values.put(Keep.COLUMN_TAG, keep.getTag().toUpperCase());
 		values.put(Keep.COLUMN_DATE, keep.getDateLimite());
 		values.put(Keep.COLUMN_NUM_KEEP, keep.getNumKeep());
+		values.put(Keep.COLUMN_IMG, keep.getImagePath());
 //		Log.d("L'es values", values.toString());
 		long id = db.insert(Keep.TABLE_NAME, null, values); // Insertion du tuple
 		db.close();
@@ -67,32 +69,32 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 	public Keep getKeep(int numKeep) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
+				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE, Keep.COLUMN_IMG},
 				Keep.COLUMN_NUM_KEEP + " = ?",
 				new String[]{String.valueOf(numKeep)}, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
-		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)));
+		Keep keep = new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_IMG)));
 		cursor.close();
 		db.close();
 		return keep;
 	}
 
-	public List<Keep> getAllKeepsByTag(String tag) {
-		List<Keep> keeps = new ArrayList<>();
-		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.query(Keep.TABLE_NAME,
-				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
-				Keep.COLUMN_TAG + " = ?", new String[]{String.valueOf(tag)}, null, null, null, null);
-		if (cursor.moveToFirst()) {
-			do {
-				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE))));
-			} while (cursor.moveToNext());
-		}
-		cursor.close();
-		db.close();
-		return keeps;
-	}
+//	public List<Keep> getAllKeepsByTag(String tag) {
+//		List<Keep> keeps = new ArrayList<>();
+//		SQLiteDatabase db = this.getReadableDatabase();
+//		Cursor cursor = db.query(Keep.TABLE_NAME,
+//				new String[]{Keep.COLUMN_TITRE, Keep.COLUMN_TEXTE, Keep.COLUMN_TAG, Keep.COLUMN_COLOR, Keep.COLUMN_NUM_KEEP, Keep.COLUMN_DATE},
+//				Keep.COLUMN_TAG + " = ?", new String[]{String.valueOf(tag)}, null, null, null, null);
+//		if (cursor.moveToFirst()) {
+//			do {
+//				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE))));
+//			} while (cursor.moveToNext());
+//		}
+//		cursor.close();
+//		db.close();
+//		return keeps;
+//	}
 
 	public List<String> getAllTags () {
 		List<String> tags = new ArrayList<>();
@@ -116,7 +118,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		Cursor cursor = db.rawQuery(selectQuery, null);
 		if (cursor.moveToFirst()) {
 			do {
-				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE))));
+				keeps.add(new Keep(cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TITRE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TEXTE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_COLOR)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_TAG)), cursor.getInt(cursor.getColumnIndex(Keep.COLUMN_NUM_KEEP)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_DATE)), cursor.getString(cursor.getColumnIndex(Keep.COLUMN_IMG))));
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
@@ -138,7 +140,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		return numero;
 	}
 
-	public int updateKeep(int id, String titre, String texte, String color, String tag, String localDate) {
+	public int updateKeep(int id, String titre, String texte, String color, String tag, String localDate, String imagePath) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put(Keep.COLUMN_TITRE, titre);
@@ -146,6 +148,7 @@ public class KeepDBHelper extends SQLiteOpenHelper {
 		values.put(Keep.COLUMN_COLOR, color);
 		values.put(Keep.COLUMN_TAG, tag);
 		values.put(Keep.COLUMN_DATE, localDate);
+		values.put(Keep.COLUMN_IMG, imagePath);
 		return db.update(Keep.TABLE_NAME, values, Keep.COLUMN_NUM_KEEP + " = ?", new String[]{String.valueOf(id)});
 	}
 }

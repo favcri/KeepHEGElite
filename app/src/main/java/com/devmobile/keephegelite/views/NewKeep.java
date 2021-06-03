@@ -1,13 +1,17 @@
 package com.devmobile.keephegelite.views;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -24,19 +33,28 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class NewKeep extends AppCompatActivity {
+	int SELECT_PHOTO = 1;
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
+	private Button buttonDate;
 	private TextView date;
+	private TextView tag;
+	private Button buttonImage;
+	private ImageView imageView;
 	private Button save;
 	private String colorFinal;
 	private String dateFinal;
 	private String tagFinal;
+	private String imageFinal;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +63,66 @@ public class NewKeep extends AppCompatActivity {
 		db = new KeepDBHelper(this);
 		titre = (EditText) findViewById(R.id.New_Keep_Titre);
 		texte = (EditText) findViewById(R.id.New_Keep_Texte);
+
 		date = (TextView) findViewById(R.id.New_Keep_Date);
-		save = (Button) findViewById(R.id.New_Keep_Save);
-		titre.setHint("Votre titre ici");
-		texte.setHint("Votre texte ici");
-		save.setText("Enregistrer le Keep");
-		save.setOnClickListener(new View.OnClickListener() {
+		date.setOnLongClickListener(new View.OnLongClickListener() {
 			@Override
-			public void onClick(View v) {
-				onBackPressed();
+			public boolean onLongClick(View v) {
+				dateFinal = null;
+				date.setText(null);
+				findViewById(R.id.New_Keep_Titre_Date).setVisibility(View.GONE);
+				return true;
 			}
 		});
+//		date.setVisibility(View.GONE);
+
+		tag = (TextView) findViewById(R.id.New_Keep_Tag);
+		tag.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				tagFinal = null;
+				tag.setText(null);
+				findViewById(R.id.New_Keep_Titre_Tag).setVisibility(View.GONE);
+				return true;
+			}
+		});
+
+		imageView = (ImageView) findViewById(R.id.New_Image);
+		imageView.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(NewKeep.this);
+				builder.setMessage("Voulez-vous supprimer la photo du Keep ?");
+				builder.setPositiveButton("Supprimer", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						imageView.setImageURI(null);
+						imageFinal = null;
+						dialog.cancel();
+					}
+				});
+				builder.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+				builder.show();
+				return true;
+			}
+		});
+
+		titre.setHint("Votre titre ici");
+		texte.setHint("Votre texte ici");
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == SELECT_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null) {
+			Uri uri = data.getData();
+			imageView.setImageURI(uri);
+			imageFinal = uri.toString();
+//			Log.d("L'uri start", imageFinal);
+		}
 	}
 
 	@Override
@@ -67,16 +134,48 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.findItem(R.id.menu_delete).setVisible(false);
+		if (dateFinal == null)
+			menu.findItem(R.id.menu_date).setTitle("Ajouter une date");
+		else
+			menu.findItem(R.id.menu_date).setTitle("Changer la date");
+		if (imageFinal == null)
+			menu.findItem(R.id.menu_image).setTitle("Ajouter une image");
+		else
+			menu.findItem(R.id.menu_image).setTitle("Modifier l'image");
+		if (tagFinal == null)
+			menu.findItem(R.id.menu_tag).setTitle("Ajouter un tag");
+		else
+			menu.findItem(R.id.menu_tag).setTitle("Modifier le tag");
 		return super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch(item.getItemId()) {
+			case R.id.menu_image:
+				Intent intent = new Intent(Intent.ACTION_PICK);
+				intent.setType("image/*");
+				startActivityForResult(intent, SELECT_PHOTO);
+				return true;
+			case R.id.menu_date:
+				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+						StringBuilder sb = new StringBuilder();
+						dateFinal = sb.append(year).append("-").append(monthOfYear+1).append("-").append(dayOfMonth).toString();
+						date.setVisibility(View.VISIBLE);
+						findViewById(R.id.New_Keep_Titre_Date).setVisibility(View.VISIBLE);
+						date.setText(dateFinal);
+					}
+				};
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.show();
+				return true;
 			case R.id.menu_tag:
-				AlertDialog.Builder builderSingle = new AlertDialog.Builder(NewKeep.this);
+				AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 				builderSingle.setTitle("Sélectionnez un tag existant");
-				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(NewKeep.this, android.R.layout.simple_list_item_1);
+				final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 				List<String> tags = db.getAllTags();
 				arrayAdapter.addAll(tags);
 				builderSingle.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -97,6 +196,8 @@ public class NewKeep extends AppCompatActivity {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								tagFinal = newTag.getText().toString();
+								tag.setText(tagFinal.toUpperCase());
+								findViewById(R.id.New_Keep_Titre_Tag).setVisibility(View.VISIBLE);
 								dialog.cancel();
 							}
 						});
@@ -113,6 +214,8 @@ public class NewKeep extends AppCompatActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						tagFinal = arrayAdapter.getItem(which);
+						tag.setText(tagFinal.toUpperCase());
+						findViewById(R.id.New_Keep_Titre_Tag).setVisibility(View.VISIBLE);
 						dialog.cancel();
 					}
 				});
@@ -120,9 +223,8 @@ public class NewKeep extends AppCompatActivity {
 				return true;
 			case R.id.menu_color:
 				ColorPickerDialogBuilder
-						.with(NewKeep.this)
+						.with(this)
 						.setTitle("Choisissez votre couleur de fond")
-						.initialColor(0xFFF)
 						.wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
 						.density(12)
 						.setPositiveButton("OK", new ColorPickerClickListener() {
@@ -141,19 +243,6 @@ public class NewKeep extends AppCompatActivity {
 						.build()
 						.show();
 				return true;
-			case R.id.menu_date:
-				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-					@Override
-					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-						StringBuilder sb = new StringBuilder();
-						sb.append(year).append(monthOfYear).append(dayOfMonth);
-						dateFinal = sb.toString();
-						date.setText(dateFinal);
-					}
-				};
-				Calendar c = Calendar.getInstance();
-				DatePickerDialog datePickerDialog = new DatePickerDialog(NewKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-				datePickerDialog.show();
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -162,11 +251,12 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
+//		Log.d("L'uri insert", imageFinal);
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
 			if (colorFinal == null) // Init la couleur à blanc si c'est vide
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", tagFinal, dateFinal));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", tagFinal, dateFinal, imageFinal));
 			else
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorFinal, tagFinal, dateFinal));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorFinal, tagFinal, dateFinal, imageFinal));
 		}
 	}
 }

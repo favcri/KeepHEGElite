@@ -105,7 +105,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			Intent i = new Intent(itemView.getContext(), ReminderBroadcast.class);
 			PendingIntent pi = PendingIntent.getBroadcast(itemView.getContext(), 0, i, 0);
 			am.set(AlarmManager.RTC_WAKEUP, time, pi);
-			Toast.makeText(itemView.getContext(), "Alarm is set", Toast.LENGTH_SHORT).show();
+//			Toast.makeText(itemView.getContext(), "Alarm is set", Toast.LENGTH_SHORT).show();
 		}
 
 //		private void scheduleNotification(Notification notification, int delay) {
