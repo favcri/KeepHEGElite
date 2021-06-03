@@ -1,5 +1,6 @@
 package com.devmobile.keephegelite.views;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -32,6 +33,7 @@ import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,7 +57,9 @@ public class NewKeep extends AppCompatActivity {
 	private String dateFinal;
 	private String tagFinal;
 	private String imageFinal;
+	private FloatingActionButton fab;
 
+	@SuppressLint("ResourceAsColor")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -107,6 +111,16 @@ public class NewKeep extends AppCompatActivity {
 				});
 				builder.show();
 				return true;
+			}
+		});
+
+		fab = (FloatingActionButton) findViewById(R.id.New_Keep_Fab_Save);
+//		fab.setBackgroundColor(R.color.purple_500);
+		fab.setImageResource(R.drawable.ic_baseline_save_24);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
 			}
 		});
 
