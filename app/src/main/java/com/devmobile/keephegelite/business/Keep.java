@@ -46,27 +46,6 @@ public class Keep {
 		this.numKeep = atomicInteger.getAndIncrement();
 	}
 
-//	public Keep (String titre, String texte) {
-//		this();
-//		this.titre = titre;
-//		this.texte = texte;
-//	}
-
-//	public Keep (String titre, String texte, String color) {
-//		this ();
-//		this.titre = titre;
-//		this.texte = texte;
-//		this.color = color;
-//	}
-
-//	public Keep (String titre, String texte, String color, String tag) {
-//		this ();
-//		this.titre = titre;
-//		this.texte = texte;
-//		this.color = color;
-//		this.tag = tag;
-//	}
-
 	public Keep (String titre, String texte, String color, String tag, String dateLimite, String imagePath) {
 		this ();
 		this.titre = titre;

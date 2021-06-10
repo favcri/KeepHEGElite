@@ -11,6 +11,9 @@
 		android:id="@+id/menu_date"
 		android:title="Ajouter une date" />
 	<item
+		android:id="@+id/menu_time"
+		android:title="Ajouter une heure" />
+	<item
 		android:id="@+id/menu_tag"
 		android:title="Ajouter un tag" />
 	<item

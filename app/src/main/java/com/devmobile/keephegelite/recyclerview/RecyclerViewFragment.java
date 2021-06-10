@@ -27,7 +27,6 @@ import com.devmobile.keephegelite.business.Keep;
 import com.devmobile.keephegelite.storage.KeepDBHelper;
 import com.devmobile.keephegelite.views.AffichageKeep;
 import com.devmobile.keephegelite.views.NewKeep;
-import com.devmobile.keephegelite.views.SelectTags;
 
 import java.util.List;
 
@@ -183,7 +182,7 @@ public class RecyclerViewFragment extends Fragment {
 	@SuppressLint("LongLogTag")
 	private void initDataset() {
 		if (db.getAllKeeps().isEmpty()) {
-			Keep keep = new Keep("Keep 1", "Un texte 1 de la BDD", "D5FF632E", "A faire", "12-02-20");
+			Keep keep = new Keep("Keep 1", "Un texte 1 de la BDD", "D5FF632E", "A faire", "12-02-20 12:00");
 //			Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte() + " :: " + keep.getTag());
 			long idKeep = db.insertKeep(keep);
 //			Keep keepDB = db.getKeep(idKeep);

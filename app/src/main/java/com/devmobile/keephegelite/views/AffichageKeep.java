@@ -34,6 +34,7 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
@@ -122,10 +123,17 @@ public class AffichageKeep extends AppCompatActivity {
 			else
 				tag.setText(keep.getTag());
 			if (keep.getImagePath() != null) {
+//				File imgFile = new File (keep.getImagePath());
+//				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//				imageView.setImageBitmap(myBitmap);
+
+				Bitmap bmImg = BitmapFactory.decodeFile(keep.getImagePath());
+				imageView.setImageBitmap(bmImg);
+
 //				Bitmap bitmap = BitmapFactory.decodeFile(keep.getImagePath());
 //				imageView.setImageBitmap(bitmap);
 //				imageView.setVisibility(View.VISIBLE);
-				imageView.setImageURI(Uri.parse(keep.getImagePath()));
+//				imageView.setImageURI(Uri.parse(keep.getImagePath()));
 			}
 		}
 	}

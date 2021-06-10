@@ -11,7 +11,6 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.KeepHEGElite">
-		<activity android:name=".views.SelectTags"></activity>
 		<activity
 			android:name=".common.activities.SplashScreen"
 			android:label="Keep HEG Elite">
@@ -27,7 +26,6 @@
 		<activity android:name=".views.NewKeep" />
 		<activity android:name=".views.AffichageKeep" />
 
-		<receiver android:name=".ReminderBroadcast" />
 	</application>
 
 </manifest>
