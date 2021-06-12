@@ -4,21 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,10 +31,8 @@ import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -49,17 +41,15 @@ public class NewKeep extends AppCompatActivity {
 	private KeepDBHelper db;
 	private EditText titre;
 	private EditText texte;
-	private Button buttonDate;
 	private TextView date;
 	private TextView tag;
-	private Button buttonImage;
 	private ImageView imageView;
-	private Button save;
 	private String colorFinal;
 	private String dateFinal;
 	private String timeFinal;
 	private String tagFinal;
 	private String imageFinal;
+	private Date dateTime;
 	private FloatingActionButton fab;
 
 	@SuppressLint("ResourceAsColor")
@@ -82,7 +72,6 @@ public class NewKeep extends AppCompatActivity {
 				return true;
 			}
 		});
-//		date.setVisibility(View.GONE);
 
 		tag = (TextView) findViewById(R.id.New_Keep_Tag);
 		tag.setOnLongClickListener(new View.OnLongClickListener() {
@@ -119,7 +108,6 @@ public class NewKeep extends AppCompatActivity {
 		});
 
 		fab = (FloatingActionButton) findViewById(R.id.New_Keep_Fab_Save);
-//		fab.setBackgroundColor(R.color.purple_500);
 		fab.setImageResource(R.drawable.ic_baseline_save_24);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -139,7 +127,6 @@ public class NewKeep extends AppCompatActivity {
 			Uri uri = data.getData();
 			imageView.setImageURI(uri);
 			imageFinal = uri.toString();
-//			Log.d("L'uri start", imageFinal);
 		}
 	}
 
@@ -183,17 +170,14 @@ public class NewKeep extends AppCompatActivity {
 				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-						StringBuilder sb = new StringBuilder();
-						if (timeFinal == null) {
-							dateFinal = sb.append(year).append("-").append(monthOfYear + 1).append("-").append(dayOfMonth).toString();
-							sb = new StringBuilder();
-							timeFinal = sb.append("00").append(":").append("00").toString();
-						}
-						else
-							dateFinal = sb.append(year).append("-").append(monthOfYear+1).append("-").append(dayOfMonth).append(" ").append(timeFinal).toString();
+						if (dateTime == null)
+							dateTime = new Date ();
+						dateTime.setYear(year);
+						dateTime.setMonth(monthOfYear + 1);
+						dateTime.setDate(dayOfMonth);
 						date.setVisibility(View.VISIBLE);
 						findViewById(R.id.New_Keep_Titre_Date).setVisibility(View.VISIBLE);
-						date.setText(dateFinal + " " + timeFinal);
+						date.setText(Keep.dateToString(dateTime));
 					}
 				};
 				Calendar c = Calendar.getInstance();
@@ -205,19 +189,15 @@ public class NewKeep extends AppCompatActivity {
 				TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
 					@Override
 					public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+						if (dateTime == null)
+							dateTime = new Date();
 						StringBuilder sb = new StringBuilder();
-						timeFinal = sb.append(hourOfDay).append(":").append(minute).toString();
-						if (dateFinal == null) {
-							sb = new StringBuilder();
-							dateFinal = sb.append(t.get(Calendar.YEAR)).append("-").append(t.get(Calendar.MONTH)+1).append("-").append(t.get(Calendar.DAY_OF_MONTH)).toString();
-							date.setText(dateFinal + " " + timeFinal);
-							date.setVisibility(View.VISIBLE);
-							findViewById(R.id.New_Keep_Titre_Date).setVisibility(View.VISIBLE);
+						dateTime.setHours(hourOfDay);
+						dateTime.setMinutes(minute);
+						date.setText(Keep.dateToString(dateTime));
+						date.setVisibility(View.VISIBLE);
+						findViewById(R.id.New_Keep_Titre_Date).setVisibility(View.VISIBLE);
 						}
-						else {
-							date.setText(dateFinal + " " + timeFinal);
-						}
-					}
 				};
 				TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), true);
 				timePickerDialog.show();
@@ -301,12 +281,11 @@ public class NewKeep extends AppCompatActivity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-//		Log.d("L'uri insert", imageFinal);
 		if (!titre.getText().toString().isEmpty() || !texte.getText().toString().isEmpty()) {
 			if (colorFinal == null) // Init la couleur à blanc si c'est vide
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", tagFinal, dateFinal, imageFinal));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), "FFFFFF", tagFinal, dateTime, imageFinal));
 			else
-				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorFinal, tagFinal, dateFinal, imageFinal));
+				db.insertKeep(new Keep(titre.getText().toString(), texte.getText().toString(), colorFinal, tagFinal, dateTime, imageFinal));
 		}
 	}
 }

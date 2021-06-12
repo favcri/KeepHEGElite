@@ -5,9 +5,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static java.sql.Types.BLOB;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Keep {
@@ -38,16 +37,16 @@ public class Keep {
 	private String tag;
 	private int numKeep; // Clé unique pour Java
 	private String color = "FFFFFF"; // Couleur de fond blanche par défaut
-	private String dateLimite;
+	private Date dateLimite;
 	private String imagePath;
 
-	public Keep () {
+	public Keep() {
 		Log.d("L'atomic c", atomicInteger.toString());
 		this.numKeep = atomicInteger.getAndIncrement();
 	}
 
-	public Keep (String titre, String texte, String color, String tag, String dateLimite, String imagePath) {
-		this ();
+	public Keep(String titre, String texte, String color, String tag, Date dateLimite, String imagePath) {
+		this();
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
@@ -59,7 +58,7 @@ public class Keep {
 	/**
 	 * Constructeur seulement pour getKeep dans KeepDBHelper (ici on incrémente pas @param numKeep)
 	 */
-	public Keep (String titre, String texte, String color, String tag, Integer numKeep) {
+	public Keep(String titre, String texte, String color, String tag, Integer numKeep) {
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
@@ -67,7 +66,7 @@ public class Keep {
 		this.numKeep = numKeep;
 	}
 
-	public Keep (String titre, String texte, String color, String tag, String dateLimite) {
+	public Keep(String titre, String texte, String color, String tag, Date dateLimite) {
 		this();
 		this.titre = titre;
 		this.texte = texte;
@@ -76,7 +75,7 @@ public class Keep {
 		this.dateLimite = dateLimite;
 	}
 
-	public Keep(String titre, String texte, String color, String tag, int numKeep, String dateLimite, String imagePath) {
+	public Keep(String titre, String texte, String color, String tag, int numKeep, Date dateLimite, String imagePath) {
 		this.titre = titre;
 		this.texte = texte;
 		this.color = color;
@@ -102,7 +101,7 @@ public class Keep {
 		this.texte = texte;
 	}
 
-	public String getDateLimite() {
+	public Date getDateLimite() {
 		return dateLimite;
 	}
 
@@ -114,7 +113,7 @@ public class Keep {
 		this.color = color;
 	}
 
-	public void setDateLimite(String dateLimite) {
+	public void setDateLimite(Date dateLimite) {
 		this.dateLimite = dateLimite;
 	}
 
@@ -143,11 +142,40 @@ public class Keep {
 	}
 
 	@Override
-	public String toString () {
+	public String toString() {
 		return "Keep {" +
 				"titre='" + titre + '\'' +
 				", texte='" + texte + '\'' +
 				", dateLimite=" + dateLimite +
 				'}';
+	}
+
+	public static Date stringToDate(String s) {
+		return new Date(Integer.parseInt(s.substring(0, 4)), Integer.parseInt(s.substring(5, 7)), Integer.parseInt(s.substring(8, 10)), Integer.parseInt(s.substring(11, 13)), Integer.parseInt(s.substring(14, 16)));
+	}
+
+	public static String dateToString(Date d) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(d.getYear()).append("-");
+		if (d.getMonth() > 9)
+			sb.append(d.getMonth());
+		else
+			sb.append("0").append(d.getMonth());
+		sb.append("-");
+		if (d.getDate() > 9)
+			sb.append(d.getDate());
+		else
+			sb.append("0").append(d.getDate());
+		sb.append(" ");
+		if (d.getHours() > 9)
+			sb.append(d.getHours());
+		else
+			sb.append("0").append(d.getHours());
+		sb.append(":");
+		if (d.getMinutes() > 9)
+			sb.append(d.getMinutes());
+		else
+			sb.append("0").append(d.getMinutes());
+		return sb.toString();
 	}
 }

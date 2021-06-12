@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +15,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.devmobile.keephegelite.R;
 import com.devmobile.keephegelite.business.Keep;
@@ -32,10 +33,8 @@ import com.flask.colorpicker.ColorPickerView;
 import com.flask.colorpicker.builder.ColorPickerClickListener;
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -48,6 +47,7 @@ public class AffichageKeep extends AppCompatActivity {
 	private EditText texte;
 	private TextView date;
 	private TextView tag;
+
 	private ImageView imageView;
 
 	@Override
@@ -105,7 +105,6 @@ public class AffichageKeep extends AppCompatActivity {
 		if (extras != null) {
 			int numKeep = getIntent().getIntExtra("Keep", 0);
 			keep = db.getKeep(numKeep);
-//			Log.d("L'uri end", keep.getImagePath());
 			Log.d("L'atomic", String.valueOf(keep.getNumKeep()));
 			k = keep;
 			View view = findViewById(R.id.Affichage_Keep);
@@ -117,7 +116,7 @@ public class AffichageKeep extends AppCompatActivity {
 			if (keep.getDateLimite() == null)
 				findViewById(R.id.Affichage_Keep_Titre_Date).setVisibility(View.GONE);
 			else
-				date.setText(keep.getDateLimite());
+				date.setText(Keep.dateToString(keep.getDateLimite()));
 			if (keep.getTag() == null)
 				findViewById(R.id.Affichage_Keep_Titre_Tag).setVisibility(View.GONE);
 			else
@@ -154,7 +153,6 @@ public class AffichageKeep extends AppCompatActivity {
 			Uri uri = data.getData();
 			keep.setImagePath(uri.toString());
 			imageView.setImageURI(uri);
-//			imageFinal = uri.toString();
 		}
 	}
 
@@ -170,6 +168,10 @@ public class AffichageKeep extends AppCompatActivity {
 			menu.findItem(R.id.menu_date).setTitle("Ajouter une date");
 		else
 			menu.findItem(R.id.menu_date).setTitle("Changer la date");
+		if (keep.getDateLimite() == null)
+			menu.findItem(R.id.menu_time).setTitle("Ajouter une heure");
+		else
+			menu.findItem(R.id.menu_time).setTitle("Changer l'heure");
 		if (keep.getImagePath() == null)
 			menu.findItem(R.id.menu_image).setTitle("Ajouter une image");
 		else
@@ -340,15 +342,35 @@ public class AffichageKeep extends AppCompatActivity {
 				DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-						StringBuilder sb = new StringBuilder();
-						keep.setDateLimite(sb.append(year).append("-").append(monthOfYear+1).append("-").append(dayOfMonth).toString());
-						date.setText(keep.getDateLimite());
+						if (keep.getDateLimite() == null)
+							keep.setDateLimite(new Date());
+						keep.getDateLimite().setYear(year);
+						keep.getDateLimite().setMonth(monthOfYear + 1);
+						keep.getDateLimite().setDate(dayOfMonth);
+						date.setText(Keep.dateToString(keep.getDateLimite()));
 						findViewById(R.id.Affichage_Keep_Titre_Date).setVisibility(View.VISIBLE);
 					}
 				};
 				Calendar c = Calendar.getInstance();
 				DatePickerDialog datePickerDialog = new DatePickerDialog(AffichageKeep.this, dateSetListener, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
 				datePickerDialog.show();
+				return true;
+			case R.id.menu_time:
+				Calendar t = Calendar.getInstance();
+				TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+					@Override
+					public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+						if (keep.getDateLimite() == null)
+							keep.setDateLimite(new Date());
+						keep.getDateLimite().setHours(hourOfDay);
+						keep.getDateLimite().setMinutes(minute);
+						date.setText(Keep.dateToString(keep.getDateLimite()));
+						date.setVisibility(View.VISIBLE);
+					}
+				};
+				TimePickerDialog timePickerDialog = new TimePickerDialog(this, timeSetListener, t.get(Calendar.HOUR_OF_DAY), t.get(Calendar.MINUTE), true);
+				timePickerDialog.show();
+				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -361,7 +383,7 @@ public class AffichageKeep extends AppCompatActivity {
 			builder.setMessage("Voulez-vous garder vos modifications ?");
 			builder.setPositiveButton("Enregistrer", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
-					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getTag(), keep.getDateLimite(), keep.getImagePath());
+					db.updateKeep(keep.getNumKeep(), titre.getText().toString(), texte.getText().toString(), keep.getColor(), keep.getTag(), Keep.dateToString(keep.getDateLimite()), keep.getImagePath());
 					AffichageKeep.super.onBackPressed();
 				}
 			});

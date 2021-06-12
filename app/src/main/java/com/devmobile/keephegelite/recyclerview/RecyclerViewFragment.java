@@ -1,6 +1,5 @@
 package com.devmobile.keephegelite.recyclerview;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -59,20 +57,6 @@ public class RecyclerViewFragment extends Fragment {
 		}
 	};
 
-	private Button.OnClickListener onTagClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-//			RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-//			String tag = mKeeps.get(viewHolder.getAdapterPosition()).getTag();
-//			Toast.makeText(getContext(), tag, Toast.LENGTH_SHORT).show();
-//			mKeeps = db.getAllKeepsByTag(tag);
-//			mAdapter.notifyDataSetChanged();
-//			Intent intent = new Intent(view.getContext(), AffichageKeep.class);
-//			intent.putExtra("Keep", keep.getNumKeep());
-//			view.getContext().startActivity(intent);
-		}
-	};
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,13 +66,11 @@ public class RecyclerViewFragment extends Fragment {
 				.setContentText("Hello word") // body message
 				.setAutoCancel(true); // clear notification when clicked
 		Intent intent = new Intent(getContext(), RecyclerViewFragment.class);
-//		Log.d("L'crea", mBuilder);
 		PendingIntent pi = PendingIntent.getActivity(getContext(), 0, intent, Intent.FLAG_ACTIVITY_NEW_TASK);
 		mBuilder.setContentIntent(pi);
 		NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(0, mBuilder.build());
 		this.db = new KeepDBHelper(getContext());
-		initDataset();
 	}
 
 	@Override
@@ -101,13 +83,6 @@ public class RecyclerViewFragment extends Fragment {
 				rootView.getContext().startActivity(intent);
 			}
 		});
-//		rootView.findViewById(R.id.Bouton_All_Keeps).setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intent = new Intent(rootView.getContext(), SelectTags.class);
-//				rootView.getContext().startActivity(intent);
-//			}
-//		});
 		rootView.setTag(TAG);
 		mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
 
@@ -122,9 +97,8 @@ public class RecyclerViewFragment extends Fragment {
 
 		mAdapter = new KeepsAdapter(mKeeps);
 		mRecyclerView.setAdapter(mAdapter);
-		mAdapter.setOnItemClickListener(onItemClickListener, onTagClickListener);
+		mAdapter.setOnItemClickListener(onItemClickListener);
 
-//		mLinearLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.linear_layout_rb);
 		rootView.findViewById(R.id.linear_layout_rb).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -132,7 +106,6 @@ public class RecyclerViewFragment extends Fragment {
 			}
 		});
 
-//		mGridLayoutRadioButton = (RadioButton) rootView.findViewById(R.id.grid_layout_rb);
 		rootView.findViewById(R.id.grid_layout_rb).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -140,7 +113,7 @@ public class RecyclerViewFragment extends Fragment {
 			}
 		});
 		return rootView;
-	} // End onCreateView
+	}
 
 	@Override
 	public void onResume() { // Pour actualiser le RecyclerView quand on revient sur la page d'accueil
@@ -177,20 +150,5 @@ public class RecyclerViewFragment extends Fragment {
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
 		super.onSaveInstanceState(savedInstanceState);
-	}
-
-	@SuppressLint("LongLogTag")
-	private void initDataset() {
-		if (db.getAllKeeps().isEmpty()) {
-			Keep keep = new Keep("Keep 1", "Un texte 1 de la BDD", "D5FF632E", "A faire", "12-02-20 12:00");
-//			Log.d("L'titre et le texte du keep 1", keep.getTitre() + " :: " + keep.getTexte() + " :: " + keep.getTag());
-			long idKeep = db.insertKeep(keep);
-//			Keep keepDB = db.getKeep(idKeep);
-//			Log.d("L'titre et le texte du keep 1 de la BDD", keepDB.getTitre() + " :: " + keepDB.getTexte() + " . Couleur: " + keepDB.getColor());
-//			db.insertKeep(new Keep("Keep 2", "Un textee 2 de la BDD", "D274EEFF", "Fait", "Une date"));
-//			db.insertKeep (new Keep("Keep 3", "Un teexte 3 de la BDD", "FF00FF"));
-//			db.insertKeep (new Keep("Keep 4", "Un texxte 4 de la BDD", "00FF00"));
-		}
-		mKeeps = db.getAllKeeps();
 	}
 }

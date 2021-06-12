@@ -1,9 +1,5 @@
 package com.devmobile.keephegelite.recyclerview;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -27,7 +23,6 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 	private List<Keep> mKeeps;
 	private KeepDBHelper db;
 	private static View.OnClickListener mOnItemClickListener;
-	private static View.OnClickListener mOnItemClickListenerTag;
 
 	public KeepsAdapter(List<Keep> keeps) {
 		mKeeps = keeps;
@@ -55,7 +50,6 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 		else
 			viewHolder.getTvTexte().setText(mKeeps.get(position).getTexte());
 		viewHolder.setBackgroundColor(mKeeps.get(position).getColor());
-//		viewHolder.getTvDate().setText(mKeeps.get(position).getDateLimite());
 	}
 
 	@Override
@@ -66,9 +60,8 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			return mKeeps.size();
 	}
 
-	public void setOnItemClickListener(View.OnClickListener itemClickListener, Button.OnClickListener tagClickListener) {
+	public void setOnItemClickListener(View.OnClickListener itemClickListener) {
 		mOnItemClickListener = itemClickListener;
-		mOnItemClickListenerTag = tagClickListener;
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,9 +79,7 @@ public class KeepsAdapter extends RecyclerView.Adapter<KeepsAdapter.ViewHolder> 
 			this.tvTexte = (TextView) itemView.findViewById(R.id.Row_Keep_Texte);
 			this.tvDate = (TextView) itemView.findViewById(R.id.Row_Keep_Date);
 			this.bTag = (Button) itemView.findViewById(R.id.Row_Keep_Tag);
-			this.bTag.setOnClickListener(mOnItemClickListenerTag);
 			this.bTag.setTag(this);
-//			scheduleNotification(getNotification("Test"), 1000 * 5);
 		}
 
 		public void setBackgroundColor(String color) { // Pour éviter des bugs de parsing
